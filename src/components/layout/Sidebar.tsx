@@ -121,7 +121,7 @@ const NAV = [
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState(0);
 
   return (
@@ -134,7 +134,7 @@ const Sidebar = () => {
       }}
     >
       {/* Logo + toggle */}
-      <div className="flex items-center px-3 mb-5 gap-2">
+      <div className={`flex mb-5 gap-2 ${collapsed ? 'flex-col items-center px-2' : 'items-center px-3'}`}>
         <div
           className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs shrink-0"
           style={{ background: '#22c55e', color: '#000', fontFamily: 'Syne, sans-serif', letterSpacing: '0.05em' }}
@@ -148,7 +148,7 @@ const Sidebar = () => {
         )}
         <button
           onClick={() => setCollapsed((v) => !v)}
-          className="ml-auto flex items-center justify-center w-6 h-6 rounded transition-colors duration-150"
+          className={`flex items-center justify-center w-6 h-6 rounded transition-colors duration-150 ${!collapsed ? 'ml-auto' : ''}`}
           style={{ color: '#3d5a48' }}
           title={collapsed ? '사이드바 펼치기' : '사이드바 접기'}
         >
