@@ -3,26 +3,26 @@ import type { ZoneStatus } from '../types';
 
 const ZoneGrid = () => {
   const statusColor: Record<ZoneStatus, string> = {
-    active: '#22c55e',
+    active: 'var(--sf-accent)',
     warning: '#f59e0b',
-    inactive: '#374151',
+    inactive: 'var(--sf-text-4)',
   };
   const statusBg: Record<ZoneStatus, string> = {
-    active: 'rgba(34,197,94,0.04)',
-    warning: 'rgba(245,158,11,0.06)',
-    inactive: 'rgba(255,255,255,0.02)',
+    active: 'var(--sf-zone-active-bg)',
+    warning: 'var(--sf-zone-warn-bg)',
+    inactive: 'var(--sf-zone-inactive-bg)',
   };
 
   return (
     <div
       className="rounded-xl border flex flex-col p-4 min-h-[280px] md:h-full"
-      style={{ background: '#090f0b', borderColor: '#1a3020' }}
+      style={{ background: 'var(--sf-bg-card)', borderColor: 'var(--sf-border)', boxShadow: 'var(--sf-shadow)' }}
     >
       <div className="mb-3 shrink-0">
-        <h3 className="text-sm font-semibold" style={{ color: '#e2e8f0', fontFamily: 'Syne, sans-serif' }}>
+        <h3 className="text-sm font-semibold" style={{ color: 'var(--sf-text-0)', fontFamily: 'Syne, sans-serif' }}>
           재배 구역 현황
         </h3>
-        <p className="text-[11px] mt-0.5" style={{ color: '#374151' }}>
+        <p className="text-[11px] mt-0.5" style={{ color: 'var(--sf-text-4)' }}>
           6개 구역 · 5개 운영 중
         </p>
       </div>
@@ -33,17 +33,22 @@ const ZoneGrid = () => {
             className="rounded-lg border p-2.5 flex flex-col gap-1.5 transition-colors"
             style={{
               background: statusBg[z.status],
-              borderColor: z.status === 'inactive' ? '#111c14' : z.status === 'warning' ? '#3d2e0a' : '#1a3020',
+              borderColor:
+                z.status === 'inactive'
+                  ? 'var(--sf-border-dim)'
+                  : z.status === 'warning'
+                    ? 'var(--sf-warn-border)'
+                    : 'var(--sf-border)',
               opacity: z.status === 'inactive' ? 0.5 : 1,
             }}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold" style={{ color: '#94a3b8' }}>
+              <span className="text-[11px] font-semibold" style={{ color: 'var(--sf-text-1)' }}>
                 {z.name}
               </span>
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: statusColor[z.status] }} />
             </div>
-            <div className="text-[11px]" style={{ color: '#374151', fontFamily: 'Noto Sans KR, sans-serif' }}>
+            <div className="text-[11px]" style={{ color: 'var(--sf-text-4)', fontFamily: 'Noto Sans KR, sans-serif' }}>
               {z.crop}
             </div>
             {z.status !== 'inactive' ? (
@@ -53,11 +58,11 @@ const ZoneGrid = () => {
                   <span style={{ color: '#06b6d4' }}>{z.humidity}%</span>
                 </div>
                 <div>
-                  <div className="flex justify-between text-[9px] mb-0.5" style={{ color: '#2d4a35' }}>
+                  <div className="flex justify-between text-[9px] mb-0.5" style={{ color: 'var(--sf-text-5)' }}>
                     <span>건강도</span>
                     <span style={{ color: statusColor[z.status] }}>{z.health}%</span>
                   </div>
-                  <div className="h-[2px] rounded-full" style={{ background: '#111c14' }}>
+                  <div className="h-[2px] rounded-full" style={{ background: 'var(--sf-border-dim)' }}>
                     <div
                       className="h-full rounded-full"
                       style={{ width: `${z.health}%`, background: statusColor[z.status] }}
@@ -66,7 +71,7 @@ const ZoneGrid = () => {
                 </div>
               </>
             ) : (
-              <span className="text-[10px] font-mono" style={{ color: '#2d4a35' }}>
+              <span className="text-[10px] font-mono" style={{ color: 'var(--sf-text-5)' }}>
                 비활성
               </span>
             )}

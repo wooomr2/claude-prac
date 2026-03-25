@@ -38,25 +38,25 @@ const EnvironmentChart = () => {
   return (
     <div
       className="rounded-xl border flex flex-col p-4 min-h-[260px] md:h-full"
-      style={{ background: '#090f0b', borderColor: '#1a3020' }}
+      style={{ background: 'var(--sf-bg-card)', borderColor: 'var(--sf-border)', boxShadow: 'var(--sf-shadow)' }}
     >
       <div className="flex items-center justify-between mb-3 shrink-0">
         <div>
-          <h3 className="text-sm font-semibold" style={{ color: '#e2e8f0', fontFamily: 'Syne, sans-serif' }}>
+          <h3 className="text-sm font-semibold" style={{ color: 'var(--sf-text-0)', fontFamily: 'Syne, sans-serif' }}>
             24시간 환경 추이
           </h3>
-          <p className="text-[11px] mt-0.5" style={{ color: '#374151' }}>
+          <p className="text-[11px] mt-0.5" style={{ color: 'var(--sf-text-4)' }}>
             오늘 온도 및 습도 변화
           </p>
         </div>
         <div className="flex items-center gap-4 text-[11px]">
           <div className="flex items-center gap-1.5">
             <span className="w-5 h-0.5 inline-block rounded" style={{ background: '#f59e0b' }} />
-            <span style={{ color: '#64748b' }}>온도 (°C)</span>
+            <span style={{ color: 'var(--sf-text-2)' }}>온도 (°C)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-5 h-0.5 inline-block rounded" style={{ background: '#06b6d4' }} />
-            <span style={{ color: '#64748b' }}>습도 (%)</span>
+            <span style={{ color: 'var(--sf-text-2)' }}>습도 (%)</span>
           </div>
         </div>
       </div>
@@ -76,7 +76,7 @@ const EnvironmentChart = () => {
 
           {yTicks.map((v) => {
             const y = P.t + iH - ((v - TMIN) / (TMAX - TMIN)) * iH;
-            return <line key={v} x1={P.l} y1={y} x2={P.l + iW} y2={y} stroke="#111c14" strokeWidth="1" />;
+            return <line key={v} x1={P.l} y1={y} x2={P.l + iW} y2={y} stroke="var(--sf-chart-grid)" strokeWidth="1" />;
           })}
 
           {yTicks.map((v) => {
@@ -88,7 +88,7 @@ const EnvironmentChart = () => {
                 y={y + 3.5}
                 textAnchor="end"
                 fontSize="9"
-                fill="#2d4a35"
+                fill="var(--sf-text-5)"
                 fontFamily="JetBrains Mono, monospace"
               >
                 {v}°
@@ -105,7 +105,7 @@ const EnvironmentChart = () => {
                 y={H - 8}
                 textAnchor="middle"
                 fontSize="9"
-                fill="#2d4a35"
+                fill="var(--sf-text-5)"
                 fontFamily="JetBrains Mono, monospace"
               >
                 {String(h).padStart(2, '0')}h

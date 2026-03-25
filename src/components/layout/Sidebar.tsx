@@ -129,41 +129,46 @@ const Sidebar = ({ mobileOpen, onClose }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(true);
   const [active, setActive] = useState(0);
 
-  // On mobile overlay always show expanded width; on desktop respect collapsed state
-  const sidebarWidth = !collapsed || mobileOpen ? 200 : 64;
+  const expanded = !collapsed || mobileOpen;
+  const sidebarWidth = expanded ? 200 : 64;
 
   return (
     <>
-      {/* Mobile backdrop */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 md:hidden" style={{ background: 'rgba(0,0,0,0.6)' }} onClick={onClose} />
+        <div className="fixed inset-0 z-40 md:hidden" style={{ background: 'rgba(0,0,0,0.5)' }} onClick={onClose} />
       )}
 
       <aside
         className={[
           'flex flex-col py-5 gap-1 shrink-0 border-r overflow-hidden transition-all duration-300',
-          // Mobile: fixed overlay; Desktop: normal flow
           'fixed inset-y-0 left-0 z-50',
           'md:relative md:inset-y-auto md:left-auto md:z-auto',
-          // Show/hide via transform
           mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
         ].join(' ')}
-        style={{ width: sidebarWidth, background: '#080f0b', borderColor: '#1a3020' }}
+        style={{
+          width: sidebarWidth,
+          background: 'var(--sf-bg-surface)',
+          borderColor: 'var(--sf-border)',
+          boxShadow: mobileOpen ? '4px 0 24px rgba(0,0,0,0.2)' : 'none',
+        }}
       >
         {/* Logo + toggle */}
-        <div
-          className={`flex mb-5 gap-2 ${collapsed && !mobileOpen ? 'flex-col items-center px-2' : 'items-center px-3'}`}
-        >
+        <div className={`flex mb-5 gap-2 ${expanded ? 'items-center px-3' : 'flex-col items-center px-2'}`}>
           <div
             className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs shrink-0"
-            style={{ background: '#22c55e', color: '#000', fontFamily: 'Syne, sans-serif', letterSpacing: '0.05em' }}
+            style={{
+              background: 'var(--sf-accent)',
+              color: '#fff',
+              fontFamily: 'Syne, sans-serif',
+              letterSpacing: '0.05em',
+            }}
           >
             SF
           </div>
-          {(!collapsed || mobileOpen) && (
+          {expanded && (
             <span
               className="text-xs font-semibold truncate"
-              style={{ color: '#22c55e', fontFamily: 'Syne, sans-serif' }}
+              style={{ color: 'var(--sf-accent)', fontFamily: 'Syne, sans-serif' }}
             >
               SmartFarm
             </span>
@@ -173,11 +178,11 @@ const Sidebar = ({ mobileOpen, onClose }: SidebarProps) => {
               setCollapsed((v) => !v);
               if (mobileOpen) onClose();
             }}
-            className={`flex items-center justify-center w-6 h-6 rounded transition-colors duration-150 ${!collapsed || mobileOpen ? 'ml-auto' : ''}`}
-            style={{ color: '#3d5a48' }}
-            title={collapsed && !mobileOpen ? '사이드바 펼치기' : '사이드바 접기'}
+            className={`flex items-center justify-center w-6 h-6 rounded transition-colors duration-150 ${expanded ? 'ml-auto' : ''}`}
+            style={{ color: 'var(--sf-text-6)' }}
+            title={expanded && !mobileOpen ? '사이드바 접기' : '사이드바 펼치기'}
           >
-            <ChevronIcon collapsed={collapsed && !mobileOpen} />
+            <ChevronIcon collapsed={!expanded} />
           </button>
         </div>
 
@@ -186,7 +191,7 @@ const Sidebar = ({ mobileOpen, onClose }: SidebarProps) => {
           {NAV.map((item, i) => (
             <button
               key={item.label}
-              title={collapsed && !mobileOpen ? item.label : undefined}
+              title={!expanded ? item.label : undefined}
               onClick={() => {
                 setActive(i);
                 if (mobileOpen) onClose();
@@ -194,18 +199,22 @@ const Sidebar = ({ mobileOpen, onClose }: SidebarProps) => {
               className="relative w-full h-10 rounded-lg flex items-center gap-2.5 px-2.5 transition-all duration-150"
               style={
                 active === i
-                  ? { background: 'rgba(34,197,94,0.12)', color: '#22c55e', boxShadow: '0 0 10px rgba(34,197,94,0.15)' }
-                  : { color: '#3d5a48' }
+                  ? {
+                      background: 'var(--sf-accent-bg)',
+                      color: 'var(--sf-accent)',
+                      boxShadow: '0 0 10px var(--sf-accent-glow)',
+                    }
+                  : { color: 'var(--sf-text-6)' }
               }
             >
               {active === i && (
                 <span
                   className="absolute right-1.5 top-1.5 w-1 h-1 rounded-full pulse-dot"
-                  style={{ background: '#22c55e' }}
+                  style={{ background: 'var(--sf-accent)' }}
                 />
               )}
               {item.icon}
-              {(!collapsed || mobileOpen) && (
+              {expanded && (
                 <span className="text-xs truncate" style={{ fontFamily: 'Noto Sans KR, sans-serif' }}>
                   {item.label}
                 </span>
@@ -216,9 +225,9 @@ const Sidebar = ({ mobileOpen, onClose }: SidebarProps) => {
 
         {/* Status dot */}
         <div className="flex items-center gap-2 px-3 mt-2">
-          <span className="w-2 h-2 rounded-full pulse-dot shrink-0" style={{ background: '#22c55e' }} />
-          {(!collapsed || mobileOpen) && (
-            <span className="text-[9px] font-mono" style={{ color: '#2d4a35' }}>
+          <span className="w-2 h-2 rounded-full pulse-dot shrink-0" style={{ background: 'var(--sf-accent)' }} />
+          {expanded && (
+            <span className="text-[9px] font-mono" style={{ color: 'var(--sf-text-5)' }}>
               정상
             </span>
           )}

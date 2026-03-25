@@ -42,7 +42,7 @@ const Ring = ({ pct, color, size = 56 }: { pct: number; color: string; size?: nu
   const fill = Math.min(Math.max(pct, 0), 1) * circ;
   return (
     <svg width={size} height={size} style={{ transform: 'rotate(-90deg)', flexShrink: 0 }}>
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#1a3020" strokeWidth="5" />
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--sf-border)" strokeWidth="5" />
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -62,13 +62,27 @@ const Ring = ({ pct, color, size = 56 }: { pct: number; color: string; size?: nu
 const SensorCard = ({ label, value, unit, min, max, target, color, status, trend, history, icon }: SensorCardProps) => {
   const pct = (value - min) / (max - min);
   const displayVal = value > 999 ? value.toLocaleString() : value.toFixed(unit === 'lux' || unit === 'ppm' ? 0 : 1);
-  const borderColor = status === 'normal' ? '#1a3020' : status === 'warning' ? '#4a3010' : '#4a1010';
-  const bg = status === 'normal' ? '#090f0b' : status === 'warning' ? '#100c04' : '#100404';
+
+  const borderColor =
+    status === 'normal'
+      ? 'var(--sf-ok-border)'
+      : status === 'warning'
+        ? 'var(--sf-warn-border)'
+        : 'var(--sf-danger-border)';
+  const bg =
+    status === 'normal' ? 'var(--sf-ok-bg)' : status === 'warning' ? 'var(--sf-warn-bg)' : 'var(--sf-danger-bg)';
+
+  const statusStyle =
+    status === 'normal'
+      ? { background: 'var(--sf-accent-bg)', color: 'var(--sf-accent)' }
+      : status === 'warning'
+        ? { background: 'rgba(245,158,11,0.1)', color: '#f59e0b' }
+        : { background: 'rgba(239,68,68,0.1)', color: '#f87171' };
 
   return (
     <div
       className="relative rounded-xl border flex flex-col gap-2.5 p-4 overflow-hidden fade-in"
-      style={{ borderColor, background: bg }}
+      style={{ borderColor, background: bg, boxShadow: 'var(--sf-shadow)' }}
     >
       <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: color }} />
 
@@ -77,21 +91,12 @@ const SensorCard = ({ label, value, unit, min, max, target, color, status, trend
           <span className="text-sm">{icon}</span>
           <span
             className="text-[11px] font-medium"
-            style={{ color: '#64748b', fontFamily: 'Noto Sans KR, sans-serif' }}
+            style={{ color: 'var(--sf-text-2)', fontFamily: 'Noto Sans KR, sans-serif' }}
           >
             {label}
           </span>
         </div>
-        <span
-          className="text-[10px] px-2 py-0.5 rounded-full font-mono"
-          style={
-            status === 'normal'
-              ? { background: 'rgba(34,197,94,0.1)', color: '#22c55e' }
-              : status === 'warning'
-                ? { background: 'rgba(245,158,11,0.1)', color: '#f59e0b' }
-                : { background: 'rgba(239,68,68,0.1)', color: '#f87171' }
-          }
-        >
+        <span className="text-[10px] px-2 py-0.5 rounded-full font-mono" style={statusStyle}>
           {status === 'normal' ? '정상' : status === 'warning' ? '주의' : '위험'}
         </span>
       </div>
@@ -102,13 +107,13 @@ const SensorCard = ({ label, value, unit, min, max, target, color, status, trend
           <span className="text-2xl font-bold leading-none" style={{ color, fontFamily: 'JetBrains Mono, monospace' }}>
             {displayVal}
           </span>
-          <span className="text-[11px] mt-1" style={{ color: '#374151' }}>
+          <span className="text-[11px] mt-1" style={{ color: 'var(--sf-text-4)' }}>
             {unit}
           </span>
         </div>
         <div className="ml-auto flex flex-col items-end gap-1">
           <Sparkline data={history} color={color} w={72} h={28} />
-          <span className="text-[10px] font-mono" style={{ color: trend > 0 ? '#f59e0b' : '#22c55e' }}>
+          <span className="text-[10px] font-mono" style={{ color: trend > 0 ? '#f59e0b' : 'var(--sf-accent)' }}>
             {trend > 0 ? '↑' : '↓'} {Math.abs(trend)}
             {unit === '°C' || unit === '%' ? unit : ''}
           </span>
@@ -116,15 +121,15 @@ const SensorCard = ({ label, value, unit, min, max, target, color, status, trend
       </div>
 
       <div className="space-y-1">
-        <div className="flex justify-between text-[10px] font-mono" style={{ color: '#2d4a35' }}>
+        <div className="flex justify-between text-[10px] font-mono" style={{ color: 'var(--sf-text-5)' }}>
           <span>{min}</span>
-          <span style={{ color: '#374151' }}>
+          <span style={{ color: 'var(--sf-text-4)' }}>
             목표 {target}
             {unit}
           </span>
           <span>{max}</span>
         </div>
-        <div className="h-[3px] rounded-full overflow-hidden" style={{ background: '#1a3020' }}>
+        <div className="h-[3px] rounded-full overflow-hidden" style={{ background: 'var(--sf-border)' }}>
           <div
             className="h-full rounded-full"
             style={{ width: `${Math.min(pct * 100, 100)}%`, background: color, transition: 'width 1.2s ease' }}

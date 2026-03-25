@@ -97,14 +97,12 @@ const DashboardPage = () => {
   return (
     <div
       className="flex flex-col h-screen overflow-hidden"
-      style={{ background: '#060d09', color: '#e2e8f0', fontFamily: 'Noto Sans KR, sans-serif' }}
+      style={{ background: 'var(--sf-bg-page)', color: 'var(--sf-text-0)', fontFamily: 'Noto Sans KR, sans-serif' }}
     >
       <div className="flex flex-1 min-h-0 overflow-hidden">
-        {/* Sidebar: hidden from flow on mobile (fixed overlay) */}
         <div className="hidden md:block">
           <Sidebar mobileOpen={false} onClose={() => setSidebarOpen(false)} />
         </div>
-        {/* Mobile overlay sidebar */}
         <div className="md:hidden">
           <Sidebar mobileOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         </div>
@@ -113,20 +111,20 @@ const DashboardPage = () => {
           <Header onMenuClick={() => setSidebarOpen(true)} />
 
           <main className="flex-1 overflow-auto p-3 md:p-4 flex flex-col gap-3 md:gap-4">
-            {/* Row 1 – sensor cards: 2 cols on mobile, 4 on desktop */}
+            {/* Row 1 – sensor cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 shrink-0">
               {sensors.map((s) => (
                 <SensorCard key={s.label} {...s} />
               ))}
             </div>
 
-            {/* Row 2 – chart + zones: stacked on mobile, side by side on desktop */}
+            {/* Row 2 – chart + zones */}
             <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-3 md:gap-4">
               <EnvironmentChart />
               <ZoneGrid />
             </div>
 
-            {/* Row 3 – irrigation + alerts: stacked on mobile, side by side on desktop */}
+            {/* Row 3 – irrigation + alerts */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 shrink-0">
               <IrrigationPanel />
               <AlertFeed />
