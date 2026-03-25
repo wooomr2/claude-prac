@@ -27,6 +27,7 @@ const DashboardPage = () => {
   const [humid, setHumid] = useState(67.5);
   const [co2, setCo2] = useState(842);
   const [light, setLight] = useState(35400);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -99,27 +100,34 @@ const DashboardPage = () => {
       style={{ background: '#060d09', color: '#e2e8f0', fontFamily: 'Noto Sans KR, sans-serif' }}
     >
       <div className="flex flex-1 min-h-0 overflow-hidden">
-        <Sidebar />
+        {/* Sidebar: hidden from flow on mobile (fixed overlay) */}
+        <div className="hidden md:block">
+          <Sidebar mobileOpen={false} onClose={() => setSidebarOpen(false)} />
+        </div>
+        {/* Mobile overlay sidebar */}
+        <div className="md:hidden">
+          <Sidebar mobileOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        </div>
 
         <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-          <Header />
+          <Header onMenuClick={() => setSidebarOpen(true)} />
 
-          <main className="flex-1 overflow-auto p-4 flex flex-col gap-4">
-            {/* Row 1 – sensor cards */}
-            <div className="grid grid-cols-4 gap-4 shrink-0">
+          <main className="flex-1 overflow-auto p-3 md:p-4 flex flex-col gap-3 md:gap-4">
+            {/* Row 1 – sensor cards: 2 cols on mobile, 4 on desktop */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 shrink-0">
               {sensors.map((s) => (
                 <SensorCard key={s.label} {...s} />
               ))}
             </div>
 
-            {/* Row 2 – chart + zones */}
-            <div className="grid gap-4 flex-1 min-h-0" style={{ gridTemplateColumns: '3fr 2fr' }}>
+            {/* Row 2 – chart + zones: stacked on mobile, side by side on desktop */}
+            <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-3 md:gap-4">
               <EnvironmentChart />
               <ZoneGrid />
             </div>
 
-            {/* Row 3 – irrigation + alerts */}
-            <div className="grid grid-cols-2 gap-4 shrink-0">
+            {/* Row 3 – irrigation + alerts: stacked on mobile, side by side on desktop */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 shrink-0">
               <IrrigationPanel />
               <AlertFeed />
             </div>

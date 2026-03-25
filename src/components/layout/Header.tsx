@@ -1,24 +1,40 @@
 import { useState, useEffect } from 'react';
 
 // ─── TopBar ───────────────────────────────────────────────────────────────────
-const TopBar = ({ time }: { time: Date }) => {
+const TopBar = ({ time, onMenuClick }: { time: Date; onMenuClick: () => void }) => {
   const t = time.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
   const d = time.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
   return (
     <header
-      className="flex items-center px-5 shrink-0 gap-4"
+      className="flex items-center px-3 md:px-5 shrink-0 gap-2 md:gap-4"
       style={{ height: 52, background: '#080f0b', borderBottom: '1px solid #1a3020' }}
     >
+      {/* Hamburger — mobile only */}
+      <button
+        className="md:hidden flex flex-col gap-1 items-center justify-center w-8 h-8 shrink-0"
+        onClick={onMenuClick}
+        aria-label="메뉴 열기"
+      >
+        <span className="w-4 h-0.5 rounded" style={{ background: '#3d5a48' }} />
+        <span className="w-4 h-0.5 rounded" style={{ background: '#3d5a48' }} />
+        <span className="w-4 h-0.5 rounded" style={{ background: '#3d5a48' }} />
+      </button>
+
       <div className="flex flex-col leading-tight">
-        <span className="text-[10px] font-mono tracking-widest uppercase" style={{ color: '#22c55e' }}>
+        <span className="text-[10px] font-mono tracking-widest uppercase hidden md:block" style={{ color: '#22c55e' }}>
           Smart Farm
         </span>
-        <span className="text-[14px] font-semibold" style={{ color: '#e2e8f0', fontFamily: 'Syne, sans-serif' }}>
+        <span
+          className="text-[13px] md:text-[14px] font-semibold"
+          style={{ color: '#e2e8f0', fontFamily: 'Syne, sans-serif' }}
+        >
           자동화 제어 센터
         </span>
       </div>
-      <div className="h-7 w-px mx-2" style={{ background: '#1a3020' }} />
-      <div className="flex items-center gap-1.5 text-xs" style={{ color: '#475569' }}>
+
+      {/* Location — desktop only */}
+      <div className="hidden md:flex h-7 w-px mx-2" style={{ background: '#1a3020' }} />
+      <div className="hidden md:flex items-center gap-1.5 text-xs" style={{ color: '#475569' }}>
         <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3 shrink-0">
           <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2a5 5 0 110 10A5 5 0 018 3z" opacity=".3" />
           <path d="M8 5a3 3 0 100 6A3 3 0 008 5z" />
@@ -26,24 +42,30 @@ const TopBar = ({ time }: { time: Date }) => {
         경기도 화성 · 온실 1동
       </div>
 
-      <div className="ml-auto flex items-center gap-4">
-        <div className="flex items-center gap-2 text-xs" style={{ color: '#64748b' }}>
+      <div className="ml-auto flex items-center gap-2 md:gap-4">
+        {/* Weather — desktop only */}
+        <div className="hidden md:flex items-center gap-2 text-xs" style={{ color: '#64748b' }}>
           <span style={{ color: '#fbbf24' }}>☀</span>
           외부 18.5°C · 맑음
         </div>
-        <div className="h-5 w-px" style={{ background: '#1a3020' }} />
+        <div className="hidden md:block h-5 w-px" style={{ background: '#1a3020' }} />
+
+        {/* Clock */}
         <div className="flex flex-col items-end">
           <span
-            className="text-base leading-none"
+            className="text-sm md:text-base leading-none"
             style={{ color: '#e2e8f0', fontFamily: 'JetBrains Mono, monospace' }}
           >
             {t}
           </span>
-          <span className="text-[10px] mt-0.5" style={{ color: '#374151' }}>
+          <span className="text-[10px] mt-0.5 hidden md:block" style={{ color: '#374151' }}>
             {d}
           </span>
         </div>
-        <div className="h-5 w-px" style={{ background: '#1a3020' }} />
+
+        <div className="hidden md:block h-5 w-px" style={{ background: '#1a3020' }} />
+
+        {/* Notification */}
         <button
           className="relative flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
           style={{ color: '#475569' }}
@@ -66,7 +88,7 @@ const TopBar = ({ time }: { time: Date }) => {
 // ─── StatsStrip ───────────────────────────────────────────────────────────────
 const StatsStrip = () => (
   <div
-    className="flex items-center gap-6 px-5 shrink-0 text-[11px] font-mono"
+    className="hidden md:flex items-center gap-6 px-5 shrink-0 text-[11px] font-mono"
     style={{ height: 30, background: '#060d09', borderBottom: '1px solid #111c14', color: '#2d4a35' }}
   >
     <span className="flex items-center gap-1.5">
@@ -86,7 +108,7 @@ const StatsStrip = () => (
 );
 
 // ─── Header ───────────────────────────────────────────────────────────────────
-const Header = () => {
+const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -96,7 +118,7 @@ const Header = () => {
 
   return (
     <>
-      <TopBar time={time} />
+      <TopBar time={time} onMenuClick={onMenuClick} />
       <StatsStrip />
     </>
   );

@@ -120,82 +120,111 @@ const NAV = [
 ];
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
-const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+interface SidebarProps {
+  mobileOpen: boolean;
+  onClose: () => void;
+}
+
+const Sidebar = ({ mobileOpen, onClose }: SidebarProps) => {
+  const [collapsed, setCollapsed] = useState(true);
   const [active, setActive] = useState(0);
 
+  // On mobile overlay always show expanded width; on desktop respect collapsed state
+  const sidebarWidth = !collapsed || mobileOpen ? 200 : 64;
+
   return (
-    <aside
-      className="flex flex-col py-5 gap-1 shrink-0 border-r overflow-hidden transition-all duration-300"
-      style={{
-        width: collapsed ? 64 : 200,
-        background: '#080f0b',
-        borderColor: '#1a3020',
-      }}
-    >
-      {/* Logo + toggle */}
-      <div className={`flex mb-5 gap-2 ${collapsed ? 'flex-col items-center px-2' : 'items-center px-3'}`}>
+    <>
+      {/* Mobile backdrop */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 md:hidden" style={{ background: 'rgba(0,0,0,0.6)' }} onClick={onClose} />
+      )}
+
+      <aside
+        className={[
+          'flex flex-col py-5 gap-1 shrink-0 border-r overflow-hidden transition-all duration-300',
+          // Mobile: fixed overlay; Desktop: normal flow
+          'fixed inset-y-0 left-0 z-50',
+          'md:relative md:inset-y-auto md:left-auto md:z-auto',
+          // Show/hide via transform
+          mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+        ].join(' ')}
+        style={{ width: sidebarWidth, background: '#080f0b', borderColor: '#1a3020' }}
+      >
+        {/* Logo + toggle */}
         <div
-          className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs shrink-0"
-          style={{ background: '#22c55e', color: '#000', fontFamily: 'Syne, sans-serif', letterSpacing: '0.05em' }}
+          className={`flex mb-5 gap-2 ${collapsed && !mobileOpen ? 'flex-col items-center px-2' : 'items-center px-3'}`}
         >
-          SF
-        </div>
-        {!collapsed && (
-          <span className="text-xs font-semibold truncate" style={{ color: '#22c55e', fontFamily: 'Syne, sans-serif' }}>
-            SmartFarm
-          </span>
-        )}
-        <button
-          onClick={() => setCollapsed((v) => !v)}
-          className={`flex items-center justify-center w-6 h-6 rounded transition-colors duration-150 ${!collapsed ? 'ml-auto' : ''}`}
-          style={{ color: '#3d5a48' }}
-          title={collapsed ? '사이드바 펼치기' : '사이드바 접기'}
-        >
-          <ChevronIcon collapsed={collapsed} />
-        </button>
-      </div>
-
-      {/* Nav items */}
-      <div className="flex flex-col gap-1 flex-1 w-full px-2">
-        {NAV.map((item, i) => (
-          <button
-            key={item.label}
-            title={collapsed ? item.label : undefined}
-            onClick={() => setActive(i)}
-            className="relative w-full h-10 rounded-lg flex items-center gap-2.5 px-2.5 transition-all duration-150"
-            style={
-              active === i
-                ? { background: 'rgba(34,197,94,0.12)', color: '#22c55e', boxShadow: '0 0 10px rgba(34,197,94,0.15)' }
-                : { color: '#3d5a48' }
-            }
+          <div
+            className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs shrink-0"
+            style={{ background: '#22c55e', color: '#000', fontFamily: 'Syne, sans-serif', letterSpacing: '0.05em' }}
           >
-            {active === i && (
-              <span
-                className="absolute right-1.5 top-1.5 w-1 h-1 rounded-full pulse-dot"
-                style={{ background: '#22c55e' }}
-              />
-            )}
-            {item.icon}
-            {!collapsed && (
-              <span className="text-xs truncate" style={{ fontFamily: 'Noto Sans KR, sans-serif' }}>
-                {item.label}
-              </span>
-            )}
+            SF
+          </div>
+          {(!collapsed || mobileOpen) && (
+            <span
+              className="text-xs font-semibold truncate"
+              style={{ color: '#22c55e', fontFamily: 'Syne, sans-serif' }}
+            >
+              SmartFarm
+            </span>
+          )}
+          <button
+            onClick={() => {
+              setCollapsed((v) => !v);
+              if (mobileOpen) onClose();
+            }}
+            className={`flex items-center justify-center w-6 h-6 rounded transition-colors duration-150 ${!collapsed || mobileOpen ? 'ml-auto' : ''}`}
+            style={{ color: '#3d5a48' }}
+            title={collapsed && !mobileOpen ? '사이드바 펼치기' : '사이드바 접기'}
+          >
+            <ChevronIcon collapsed={collapsed && !mobileOpen} />
           </button>
-        ))}
-      </div>
+        </div>
 
-      {/* Status dot */}
-      <div className="flex items-center gap-2 px-3 mt-2">
-        <span className="w-2 h-2 rounded-full pulse-dot shrink-0" style={{ background: '#22c55e' }} />
-        {!collapsed && (
-          <span className="text-[9px] font-mono" style={{ color: '#2d4a35' }}>
-            정상
-          </span>
-        )}
-      </div>
-    </aside>
+        {/* Nav items */}
+        <div className="flex flex-col gap-1 flex-1 w-full px-2 overflow-y-auto">
+          {NAV.map((item, i) => (
+            <button
+              key={item.label}
+              title={collapsed && !mobileOpen ? item.label : undefined}
+              onClick={() => {
+                setActive(i);
+                if (mobileOpen) onClose();
+              }}
+              className="relative w-full h-10 rounded-lg flex items-center gap-2.5 px-2.5 transition-all duration-150"
+              style={
+                active === i
+                  ? { background: 'rgba(34,197,94,0.12)', color: '#22c55e', boxShadow: '0 0 10px rgba(34,197,94,0.15)' }
+                  : { color: '#3d5a48' }
+              }
+            >
+              {active === i && (
+                <span
+                  className="absolute right-1.5 top-1.5 w-1 h-1 rounded-full pulse-dot"
+                  style={{ background: '#22c55e' }}
+                />
+              )}
+              {item.icon}
+              {(!collapsed || mobileOpen) && (
+                <span className="text-xs truncate" style={{ fontFamily: 'Noto Sans KR, sans-serif' }}>
+                  {item.label}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Status dot */}
+        <div className="flex items-center gap-2 px-3 mt-2">
+          <span className="w-2 h-2 rounded-full pulse-dot shrink-0" style={{ background: '#22c55e' }} />
+          {(!collapsed || mobileOpen) && (
+            <span className="text-[9px] font-mono" style={{ color: '#2d4a35' }}>
+              정상
+            </span>
+          )}
+        </div>
+      </aside>
+    </>
   );
 };
 

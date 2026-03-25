@@ -37,7 +37,7 @@ const EnvironmentChart = () => {
 
   return (
     <div
-      className="rounded-xl border h-full flex flex-col p-4"
+      className="rounded-xl border flex flex-col p-4 min-h-[260px] md:h-full"
       style={{ background: '#090f0b', borderColor: '#1a3020' }}
     >
       <div className="flex items-center justify-between mb-3 shrink-0">

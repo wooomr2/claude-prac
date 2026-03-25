@@ -15,7 +15,7 @@ const ZoneGrid = () => {
 
   return (
     <div
-      className="rounded-xl border flex flex-col p-4 h-full"
+      className="rounded-xl border flex flex-col p-4 min-h-[280px] md:h-full"
       style={{ background: '#090f0b', borderColor: '#1a3020' }}
     >
       <div className="mb-3 shrink-0">
