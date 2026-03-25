@@ -1,18 +1,25 @@
 import { ZONES } from '../data';
 import type { ZoneStatus } from '../types';
 
-const ZoneGrid = () => {
-  const statusColor: Record<ZoneStatus, string> = {
-    active: 'var(--sf-accent)',
-    warning: '#f59e0b',
-    inactive: 'var(--sf-text-4)',
-  };
-  const statusBg: Record<ZoneStatus, string> = {
-    active: 'var(--sf-zone-active-bg)',
-    warning: 'var(--sf-zone-warn-bg)',
-    inactive: 'var(--sf-zone-inactive-bg)',
-  };
+const STATUS_COLOR: Record<ZoneStatus, string> = {
+  active: 'var(--sf-accent)',
+  warning: '#f59e0b',
+  inactive: 'var(--sf-text-4)',
+};
 
+const STATUS_BG: Record<ZoneStatus, string> = {
+  active: 'var(--sf-zone-active-bg)',
+  warning: 'var(--sf-zone-warn-bg)',
+  inactive: 'var(--sf-zone-inactive-bg)',
+};
+
+const STATUS_BORDER: Record<ZoneStatus, string> = {
+  active: 'var(--sf-border)',
+  warning: 'var(--sf-warn-border)',
+  inactive: 'var(--sf-border-dim)',
+};
+
+function ZoneGrid() {
   return (
     <div
       className="rounded-xl border flex flex-col p-4 min-h-[280px] md:h-full"
@@ -32,13 +39,8 @@ const ZoneGrid = () => {
             key={z.id}
             className="rounded-lg border p-2.5 flex flex-col gap-1.5 transition-colors"
             style={{
-              background: statusBg[z.status],
-              borderColor:
-                z.status === 'inactive'
-                  ? 'var(--sf-border-dim)'
-                  : z.status === 'warning'
-                    ? 'var(--sf-warn-border)'
-                    : 'var(--sf-border)',
+              background: STATUS_BG[z.status],
+              borderColor: STATUS_BORDER[z.status],
               opacity: z.status === 'inactive' ? 0.5 : 1,
             }}
           >
@@ -46,7 +48,7 @@ const ZoneGrid = () => {
               <span className="text-[11px] font-semibold" style={{ color: 'var(--sf-text-1)' }}>
                 {z.name}
               </span>
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: statusColor[z.status] }} />
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: STATUS_COLOR[z.status] }} />
             </div>
             <div className="text-[11px]" style={{ color: 'var(--sf-text-4)', fontFamily: 'Noto Sans KR, sans-serif' }}>
               {z.crop}
@@ -60,12 +62,12 @@ const ZoneGrid = () => {
                 <div>
                   <div className="flex justify-between text-[9px] mb-0.5" style={{ color: 'var(--sf-text-5)' }}>
                     <span>건강도</span>
-                    <span style={{ color: statusColor[z.status] }}>{z.health}%</span>
+                    <span style={{ color: STATUS_COLOR[z.status] }}>{z.health}%</span>
                   </div>
                   <div className="h-[2px] rounded-full" style={{ background: 'var(--sf-border-dim)' }}>
                     <div
                       className="h-full rounded-full"
-                      style={{ width: `${z.health}%`, background: statusColor[z.status] }}
+                      style={{ width: `${z.health}%`, background: STATUS_COLOR[z.status] }}
                     />
                   </div>
                 </div>
@@ -80,6 +82,6 @@ const ZoneGrid = () => {
       </div>
     </div>
   );
-};
+}
 
 export default ZoneGrid;

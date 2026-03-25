@@ -1,39 +1,48 @@
-import { TEMP_HISTORY, HUMID_HISTORY } from '../data';
+import { HUMID_HISTORY, TEMP_HISTORY } from '../data';
 
-const EnvironmentChart = () => {
-  const W = 500,
-    H = 190;
-  const P = { t: 20, r: 16, b: 36, l: 48 };
-  const iW = W - P.l - P.r;
-  const iH = H - P.t - P.b;
+// ─── Chart Constants ─────────────────────────────────────────────────────────
+const W = 500;
+const H = 190;
+const P = { t: 20, r: 16, b: 36, l: 48 };
+const IW = W - P.l - P.r;
+const IH = H - P.t - P.b;
 
-  const TMIN = 18,
-    TMAX = 28;
-  const HMIN = 55,
-    HMAX = 80;
+const TEMP_RANGE = { min: 18, max: 28 };
+const HUMID_RANGE = { min: 55, max: 80 };
 
-  const tLine = TEMP_HISTORY.map((v, i) => {
-    const x = P.l + (i / 23) * iW;
-    const y = P.t + iH - ((v - TMIN) / (TMAX - TMIN)) * iH;
-    return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
-  }).join(' ');
+const X_TICKS = [0, 4, 8, 12, 16, 20, 23];
+const Y_TICKS = [18, 20, 22, 24, 26, 28];
 
-  const hLine = HUMID_HISTORY.map((v, i) => {
-    const x = P.l + (i / 23) * iW;
-    const y = P.t + iH - ((v - HMIN) / (HMAX - HMIN)) * iH;
-    return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
-  }).join(' ');
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+function buildChartLine(data: number[], range: { min: number; max: number }): string {
+  const span = range.max - range.min;
+  return data
+    .map((v, i) => {
+      const x = P.l + (i / 23) * IW;
+      const y = P.t + IH - ((v - range.min) / span) * IH;
+      return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+    })
+    .join(' ');
+}
 
-  const tArea = `${tLine} L${(P.l + iW).toFixed(1)} ${P.t + iH} L${P.l} ${P.t + iH} Z`;
-  const hArea = `${hLine} L${(P.l + iW).toFixed(1)} ${P.t + iH} L${P.l} ${P.t + iH} Z`;
+function buildChartArea(linePath: string): string {
+  return `${linePath} L${(P.l + IW).toFixed(1)} ${P.t + IH} L${P.l} ${P.t + IH} Z`;
+}
 
-  const xTicks = [0, 4, 8, 12, 16, 20, 23];
-  const yTicks = [18, 20, 22, 24, 26, 28];
+function yForValue(value: number, range: { min: number; max: number }): number {
+  return P.t + IH - ((value - range.min) / (range.max - range.min)) * IH;
+}
 
-  const lastTx = P.l + iW;
-  const lastTy = P.t + iH - ((TEMP_HISTORY[23] - TMIN) / (TMAX - TMIN)) * iH;
-  const lastHx = P.l + iW;
-  const lastHy = P.t + iH - ((HUMID_HISTORY[23] - HMIN) / (HMAX - HMIN)) * iH;
+// ─── Component ───────────────────────────────────────────────────────────────
+function EnvironmentChart() {
+  const tLine = buildChartLine(TEMP_HISTORY, TEMP_RANGE);
+  const hLine = buildChartLine(HUMID_HISTORY, HUMID_RANGE);
+  const tArea = buildChartArea(tLine);
+  const hArea = buildChartArea(hLine);
+
+  const lastX = P.l + IW;
+  const lastTy = yForValue(TEMP_HISTORY[23], TEMP_RANGE);
+  const lastHy = yForValue(HUMID_HISTORY[23], HUMID_RANGE);
 
   return (
     <div
@@ -74,13 +83,13 @@ const EnvironmentChart = () => {
             </linearGradient>
           </defs>
 
-          {yTicks.map((v) => {
-            const y = P.t + iH - ((v - TMIN) / (TMAX - TMIN)) * iH;
-            return <line key={v} x1={P.l} y1={y} x2={P.l + iW} y2={y} stroke="var(--sf-chart-grid)" strokeWidth="1" />;
+          {Y_TICKS.map((v) => {
+            const y = yForValue(v, TEMP_RANGE);
+            return <line key={v} x1={P.l} y1={y} x2={P.l + IW} y2={y} stroke="var(--sf-chart-grid)" strokeWidth="1" />;
           })}
 
-          {yTicks.map((v) => {
-            const y = P.t + iH - ((v - TMIN) / (TMAX - TMIN)) * iH;
+          {Y_TICKS.map((v) => {
+            const y = yForValue(v, TEMP_RANGE);
             return (
               <text
                 key={v}
@@ -96,8 +105,8 @@ const EnvironmentChart = () => {
             );
           })}
 
-          {xTicks.map((h) => {
-            const x = P.l + (h / 23) * iW;
+          {X_TICKS.map((h) => {
+            const x = P.l + (h / 23) * IW;
             return (
               <text
                 key={h}
@@ -118,19 +127,19 @@ const EnvironmentChart = () => {
           <path d={hLine} stroke="#06b6d4" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
           <path d={tLine} stroke="#f59e0b" strokeWidth="2" fill="none" strokeLinejoin="round" />
 
-          <circle cx={lastHx} cy={lastHy} r="3" fill="#06b6d4" />
-          <circle cx={lastTx} cy={lastTy} r="3.5" fill="#f59e0b" />
+          <circle cx={lastX} cy={lastHy} r="3" fill="#06b6d4" />
+          <circle cx={lastX} cy={lastTy} r="3.5" fill="#f59e0b" />
 
-          <text x={lastTx + 6} y={lastTy + 4} fontSize="9.5" fill="#f59e0b" fontFamily="JetBrains Mono, monospace">
+          <text x={lastX + 6} y={lastTy + 4} fontSize="9.5" fill="#f59e0b" fontFamily="JetBrains Mono, monospace">
             {TEMP_HISTORY[23]}°
           </text>
-          <text x={lastHx + 6} y={lastHy + 4} fontSize="9.5" fill="#06b6d4" fontFamily="JetBrains Mono, monospace">
+          <text x={lastX + 6} y={lastHy + 4} fontSize="9.5" fill="#06b6d4" fontFamily="JetBrains Mono, monospace">
             {HUMID_HISTORY[23]}%
           </text>
         </svg>
       </div>
     </div>
   );
-};
+}
 
 export default EnvironmentChart;

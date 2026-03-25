@@ -10,19 +10,24 @@ import ZoneGrid from './components/ZoneGrid';
 import { CO2_HISTORY, HUMID_HISTORY, LIGHT_HISTORY, TEMP_HISTORY } from './data';
 import type { SensorCardProps, SensorStatus } from './types';
 
-const getSensorStatus = (
-  v: number,
+function getSensorStatus(
+  value: number,
   warnLow: number,
   warnHigh: number,
   dangerLow: number,
   dangerHigh: number
-): SensorStatus => {
-  if (v < dangerLow || v > dangerHigh) return 'danger';
-  if (v < warnLow || v > warnHigh) return 'warning';
+): SensorStatus {
+  if (value < dangerLow || value > dangerHigh) return 'danger';
+  if (value < warnLow || value > warnHigh) return 'warning';
   return 'normal';
-};
+}
 
-const DashboardPage = () => {
+function clampedRandom(value: number, min: number, max: number, delta: number, decimals?: number): number {
+  const raw = Math.max(min, Math.min(max, value + (Math.random() - 0.5) * delta));
+  return decimals !== undefined ? parseFloat(raw.toFixed(decimals)) : Math.round(raw);
+}
+
+function DashboardPage() {
   const [temp, setTemp] = useState(24.3);
   const [humid, setHumid] = useState(67.5);
   const [co2, setCo2] = useState(842);
@@ -31,10 +36,10 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const id = setInterval(() => {
-      setTemp((v) => parseFloat(Math.max(20, Math.min(29, v + (Math.random() - 0.5) * 0.2)).toFixed(1)));
-      setHumid((v) => parseFloat(Math.max(58, Math.min(78, v + (Math.random() - 0.5) * 0.4)).toFixed(1)));
-      setCo2((v) => Math.round(Math.max(750, Math.min(960, v + (Math.random() - 0.5) * 8))));
-      setLight((v) => Math.round(Math.max(31000, Math.min(43000, v + (Math.random() - 0.5) * 200))));
+      setTemp((v) => clampedRandom(v, 20, 29, 0.2, 1));
+      setHumid((v) => clampedRandom(v, 58, 78, 0.4, 1));
+      setCo2((v) => clampedRandom(v, 750, 960, 8));
+      setLight((v) => clampedRandom(v, 31000, 43000, 200));
     }, 2000);
     return () => clearInterval(id);
   }, []);
@@ -111,20 +116,17 @@ const DashboardPage = () => {
           <Header onMenuClick={() => setSidebarOpen(true)} />
 
           <main className="flex-1 overflow-auto p-3 md:p-4 flex flex-col gap-3 md:gap-4">
-            {/* Row 1 – sensor cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 shrink-0">
               {sensors.map((s) => (
                 <SensorCard key={s.label} {...s} />
               ))}
             </div>
 
-            {/* Row 2 – chart + zones */}
             <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-3 md:gap-4">
               <EnvironmentChart />
               <ZoneGrid />
             </div>
 
-            {/* Row 3 – irrigation + alerts */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 shrink-0">
               <IrrigationPanel />
               <AlertFeed />
@@ -136,6 +138,6 @@ const DashboardPage = () => {
       <Footer />
     </div>
   );
-};
+}
 
 export default DashboardPage;

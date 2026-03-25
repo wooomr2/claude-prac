@@ -15,3 +15,32 @@ export interface SensorCardProps {
   history: number[];
   icon: string;
 }
+
+export interface Zone {
+  id: string;
+  name: string;
+  crop: string;
+  status: ZoneStatus;
+  temp: number;
+  humidity: number;
+  health: number;
+}
+
+export interface Alert {
+  id: number;
+  type: AlertType;
+  zone: string;
+  message: string;
+  detail: string;
+  time: string;
+}
+
+export interface IrrigationSchedule {
+  zone: string;
+  crop: string;
+  time: string;
+  duration: number;
+  volume: number;
+  done: boolean;
+  next?: boolean;
+}

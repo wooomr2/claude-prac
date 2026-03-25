@@ -125,7 +125,7 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const Sidebar = ({ mobileOpen, onClose }: SidebarProps) => {
+function Sidebar({ mobileOpen, onClose }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(true);
   const [active, setActive] = useState(0);
 
@@ -235,6 +235,6 @@ const Sidebar = ({ mobileOpen, onClose }: SidebarProps) => {
       </aside>
     </>
   );
-};
+}
 
 export default Sidebar;

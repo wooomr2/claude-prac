@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -17,6 +17,7 @@ function SunIcon() {
     </svg>
   );
 }
+
 function MoonIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -26,7 +27,7 @@ function MoonIcon() {
 }
 
 // ─── Theme Toggle ─────────────────────────────────────────────────────────────
-const ThemeToggle = () => {
+function ThemeToggle() {
   const { theme, toggle } = useTheme();
   const isDark = theme === 'dark';
   return (
@@ -40,7 +41,6 @@ const ThemeToggle = () => {
       aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
       title={isDark ? '라이트 모드' : '다크 모드'}
     >
-      {/* Track icons */}
       <span
         className="absolute left-1.5 flex items-center justify-center w-5 h-5 transition-colors"
         style={{ color: isDark ? 'var(--sf-text-5)' : 'var(--sf-accent)' }}
@@ -53,7 +53,6 @@ const ThemeToggle = () => {
       >
         <MoonIcon />
       </span>
-      {/* Thumb */}
       <span
         className="absolute w-5 h-5 rounded-full transition-all duration-300 shadow-sm"
         style={{
@@ -64,10 +63,15 @@ const ThemeToggle = () => {
       />
     </button>
   );
-};
+}
 
 // ─── TopBar ───────────────────────────────────────────────────────────────────
-const TopBar = ({ time, onMenuClick }: { time: Date; onMenuClick: () => void }) => {
+interface TopBarProps {
+  time: Date;
+  onMenuClick: () => void;
+}
+
+function TopBar({ time, onMenuClick }: TopBarProps) {
   const t = time.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
   const d = time.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
   return (
@@ -75,7 +79,6 @@ const TopBar = ({ time, onMenuClick }: { time: Date; onMenuClick: () => void }) 
       className="flex items-center px-3 md:px-5 shrink-0 gap-2 md:gap-4"
       style={{ height: 52, background: 'var(--sf-bg-surface)', borderBottom: '1px solid var(--sf-border)' }}
     >
-      {/* Hamburger — mobile only */}
       <button
         className="md:hidden flex flex-col gap-1 items-center justify-center w-8 h-8 shrink-0"
         onClick={onMenuClick}
@@ -101,7 +104,6 @@ const TopBar = ({ time, onMenuClick }: { time: Date; onMenuClick: () => void }) 
         </span>
       </div>
 
-      {/* Location — desktop only */}
       <div className="hidden md:block h-7 w-px mx-2" style={{ background: 'var(--sf-border)' }} />
       <div className="hidden md:flex items-center gap-1.5 text-xs" style={{ color: 'var(--sf-text-2)' }}>
         <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3 shrink-0">
@@ -112,14 +114,12 @@ const TopBar = ({ time, onMenuClick }: { time: Date; onMenuClick: () => void }) 
       </div>
 
       <div className="ml-auto flex items-center gap-2 md:gap-3">
-        {/* Weather — desktop only */}
         <div className="hidden md:flex items-center gap-2 text-xs" style={{ color: 'var(--sf-text-3)' }}>
           <span style={{ color: '#fbbf24' }}>☀</span>
           외부 18.5°C · 맑음
         </div>
         <div className="hidden md:block h-5 w-px" style={{ background: 'var(--sf-border)' }} />
 
-        {/* Clock */}
         <div className="flex flex-col items-end">
           <span
             className="text-sm md:text-base leading-none"
@@ -134,12 +134,10 @@ const TopBar = ({ time, onMenuClick }: { time: Date; onMenuClick: () => void }) 
 
         <div className="hidden md:block h-5 w-px" style={{ background: 'var(--sf-border)' }} />
 
-        {/* Theme toggle */}
         <ThemeToggle />
 
         <div className="hidden md:block h-5 w-px" style={{ background: 'var(--sf-border)' }} />
 
-        {/* Notification */}
         <button
           className="relative flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
           style={{ color: 'var(--sf-text-3)' }}
@@ -157,37 +155,43 @@ const TopBar = ({ time, onMenuClick }: { time: Date; onMenuClick: () => void }) 
       </div>
     </header>
   );
-};
+}
 
 // ─── StatsStrip ───────────────────────────────────────────────────────────────
-const StatsStrip = () => (
-  <div
-    className="hidden md:flex items-center gap-6 px-5 shrink-0 text-[11px] font-mono"
-    style={{
-      height: 30,
-      background: 'var(--sf-bg-page)',
-      borderBottom: '1px solid var(--sf-border-dim)',
-      color: 'var(--sf-text-5)',
-    }}
-  >
-    <span className="flex items-center gap-1.5">
-      <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--sf-accent)' }} />
-      시스템 정상 운영
-    </span>
-    <span>
-      센서 갱신 주기 <span style={{ color: 'var(--sf-text-4)' }}>2s</span>
-    </span>
-    <span>
-      마지막 동기화 <span style={{ color: 'var(--sf-text-4)' }}>09:43:21</span>
-    </span>
-    <span className="ml-auto">
-      온실 1동 · 재배 면적 <span style={{ color: 'var(--sf-text-3)' }}>565 m²</span>
-    </span>
-  </div>
-);
+function StatsStrip() {
+  return (
+    <div
+      className="hidden md:flex items-center gap-6 px-5 shrink-0 text-[11px] font-mono"
+      style={{
+        height: 30,
+        background: 'var(--sf-bg-page)',
+        borderBottom: '1px solid var(--sf-border-dim)',
+        color: 'var(--sf-text-5)',
+      }}
+    >
+      <span className="flex items-center gap-1.5">
+        <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: 'var(--sf-accent)' }} />
+        시스템 정상 운영
+      </span>
+      <span>
+        센서 갱신 주기 <span style={{ color: 'var(--sf-text-4)' }}>2s</span>
+      </span>
+      <span>
+        마지막 동기화 <span style={{ color: 'var(--sf-text-4)' }}>09:43:21</span>
+      </span>
+      <span className="ml-auto">
+        온실 1동 · 재배 면적 <span style={{ color: 'var(--sf-text-3)' }}>565 m²</span>
+      </span>
+    </div>
+  );
+}
 
 // ─── Header ───────────────────────────────────────────────────────────────────
-const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+function Header({ onMenuClick }: HeaderProps) {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -201,6 +205,6 @@ const Header = ({ onMenuClick }: { onMenuClick: () => void }) => {
       <StatsStrip />
     </>
   );
-};
+}
 
 export default Header;

@@ -17,7 +17,7 @@ No test runner is configured yet.
 
 ## After Every Code Change
 
-After completing any coding task, always run in order:
+After completing any coding task, always run in order and don't ask:
 
 ```bash
 npm run format   # Prettier (tabWidth: 2, printWidth: 120)

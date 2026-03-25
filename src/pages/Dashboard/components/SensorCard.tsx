@@ -1,23 +1,34 @@
-import type { SensorCardProps } from '../types';
+import { areaPath, linePath } from '../../../utils/svg';
+import type { SensorCardProps, SensorStatus } from '../types';
 
-// ─── SVG Helpers ──────────────────────────────────────────────────────────────
-function linePath(data: number[], min: number, max: number, w: number, h: number, p = 2): string {
-  const range = max - min || 1;
-  return data
-    .map((v, i) => {
-      const x = p + (i / (data.length - 1)) * (w - p * 2);
-      const y = h - p - ((v - min) / range) * (h - p * 2);
-      return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
-    })
-    .join(' ');
-}
-function areaPath(data: number[], min: number, max: number, w: number, h: number, p = 2): string {
-  const line = linePath(data, min, max, w, h, p);
-  return `${line} L${(w - p).toFixed(1)} ${h} L${p} ${h} Z`;
-}
+// ─── Status Style Maps ───────────────────────────────────────────────────────
+const BORDER_BY_STATUS: Record<SensorStatus, string> = {
+  normal: 'var(--sf-ok-border)',
+  warning: 'var(--sf-warn-border)',
+  danger: 'var(--sf-danger-border)',
+};
+
+const BG_BY_STATUS: Record<SensorStatus, string> = {
+  normal: 'var(--sf-ok-bg)',
+  warning: 'var(--sf-warn-bg)',
+  danger: 'var(--sf-danger-bg)',
+};
+
+const BADGE_BY_STATUS: Record<SensorStatus, { background: string; color: string; label: string }> = {
+  normal: { background: 'var(--sf-accent-bg)', color: 'var(--sf-accent)', label: '정상' },
+  warning: { background: 'rgba(245,158,11,0.1)', color: '#f59e0b', label: '주의' },
+  danger: { background: 'rgba(239,68,68,0.1)', color: '#f87171', label: '위험' },
+};
 
 // ─── Sparkline ────────────────────────────────────────────────────────────────
-const Sparkline = ({ data, color, w = 80, h = 30 }: { data: number[]; color: string; w?: number; h?: number }) => {
+interface SparklineProps {
+  data: number[];
+  color: string;
+  w?: number;
+  h?: number;
+}
+
+function Sparkline({ data, color, w = 80, h = 30 }: SparklineProps) {
   const min = Math.min(...data);
   const max = Math.max(...data);
   const gid = `g${color.replace(/[^a-z0-9]/gi, '')}`;
@@ -33,10 +44,16 @@ const Sparkline = ({ data, color, w = 80, h = 30 }: { data: number[]; color: str
       <path d={linePath(data, min, max, w, h)} stroke={color} strokeWidth="1.5" fill="none" strokeLinejoin="round" />
     </svg>
   );
-};
+}
 
 // ─── Ring Gauge ───────────────────────────────────────────────────────────────
-const Ring = ({ pct, color, size = 56 }: { pct: number; color: string; size?: number }) => {
+interface RingProps {
+  pct: number;
+  color: string;
+  size?: number;
+}
+
+function Ring({ pct, color, size = 56 }: RingProps) {
   const r = (size - 8) / 2;
   const circ = 2 * Math.PI * r;
   const fill = Math.min(Math.max(pct, 0), 1) * circ;
@@ -56,33 +73,19 @@ const Ring = ({ pct, color, size = 56 }: { pct: number; color: string; size?: nu
       />
     </svg>
   );
-};
+}
 
 // ─── SensorCard ───────────────────────────────────────────────────────────────
-const SensorCard = ({ label, value, unit, min, max, target, color, status, trend, history, icon }: SensorCardProps) => {
+function SensorCard({ label, value, unit, min, max, target, color, status, trend, history, icon }: SensorCardProps) {
   const pct = (value - min) / (max - min);
-  const displayVal = value > 999 ? value.toLocaleString() : value.toFixed(unit === 'lux' || unit === 'ppm' ? 0 : 1);
-
-  const borderColor =
-    status === 'normal'
-      ? 'var(--sf-ok-border)'
-      : status === 'warning'
-        ? 'var(--sf-warn-border)'
-        : 'var(--sf-danger-border)';
-  const bg =
-    status === 'normal' ? 'var(--sf-ok-bg)' : status === 'warning' ? 'var(--sf-warn-bg)' : 'var(--sf-danger-bg)';
-
-  const statusStyle =
-    status === 'normal'
-      ? { background: 'var(--sf-accent-bg)', color: 'var(--sf-accent)' }
-      : status === 'warning'
-        ? { background: 'rgba(245,158,11,0.1)', color: '#f59e0b' }
-        : { background: 'rgba(239,68,68,0.1)', color: '#f87171' };
+  const isInteger = unit === 'lux' || unit === 'ppm';
+  const displayVal = value > 999 ? value.toLocaleString() : value.toFixed(isInteger ? 0 : 1);
+  const badge = BADGE_BY_STATUS[status];
 
   return (
     <div
       className="relative rounded-xl border flex flex-col gap-2.5 p-4 overflow-hidden fade-in"
-      style={{ borderColor, background: bg, boxShadow: 'var(--sf-shadow)' }}
+      style={{ borderColor: BORDER_BY_STATUS[status], background: BG_BY_STATUS[status], boxShadow: 'var(--sf-shadow)' }}
     >
       <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: color }} />
 
@@ -96,8 +99,11 @@ const SensorCard = ({ label, value, unit, min, max, target, color, status, trend
             {label}
           </span>
         </div>
-        <span className="text-[10px] px-2 py-0.5 rounded-full font-mono" style={statusStyle}>
-          {status === 'normal' ? '정상' : status === 'warning' ? '주의' : '위험'}
+        <span
+          className="text-[10px] px-2 py-0.5 rounded-full font-mono"
+          style={{ background: badge.background, color: badge.color }}
+        >
+          {badge.label}
         </span>
       </div>
 
@@ -138,6 +144,6 @@ const SensorCard = ({ label, value, unit, min, max, target, color, status, trend
       </div>
     </div>
   );
-};
+}
 
 export default SensorCard;

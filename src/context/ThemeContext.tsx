@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 type Theme = 'dark' | 'light';
 
@@ -10,7 +10,11 @@ interface ThemeCtx {
 
 const ThemeContext = createContext<ThemeCtx>({ theme: 'dark', toggle: () => {} });
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem('sf-theme') as Theme) ?? 'dark');
 
   useEffect(() => {
@@ -21,6 +25,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const toggle = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   return <ThemeContext.Provider value={{ theme, toggle }}>{children}</ThemeContext.Provider>;
-};
+}
 
-export const useTheme = () => useContext(ThemeContext);
+export function useTheme(): ThemeCtx {
+  return useContext(ThemeContext);
+}

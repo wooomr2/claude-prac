@@ -1,4 +1,4 @@
-import type { ZoneStatus, AlertType } from './types';
+import type { Alert, IrrigationSchedule, Zone } from './types';
 
 export const TEMP_HISTORY = [
   21.2, 21.8, 22.1, 21.5, 20.9, 21.3, 22.4, 23.1, 23.8, 24.2, 24.5, 24.8, 25.1, 24.7, 24.3, 24.1, 23.8, 23.5, 23.2,
@@ -16,15 +16,7 @@ export const LIGHT_HISTORY = [
   5000, 800, 0, 0, 0,
 ];
 
-export const ZONES: {
-  id: string;
-  name: string;
-  crop: string;
-  status: ZoneStatus;
-  temp: number;
-  humidity: number;
-  health: number;
-}[] = [
+export const ZONES: Zone[] = [
   { id: 'A', name: '구역 A', crop: '방울토마토', status: 'active', temp: 24.3, humidity: 68, health: 92 },
   { id: 'B', name: '구역 B', crop: '로메인 상추', status: 'active', temp: 20.1, humidity: 72, health: 87 },
   { id: 'C', name: '구역 C', crop: '딸기', status: 'warning', temp: 22.7, humidity: 62, health: 71 },
@@ -33,14 +25,7 @@ export const ZONES: {
   { id: 'F', name: '구역 F', crop: '오이', status: 'inactive', temp: 18.2, humidity: 55, health: 0 },
 ];
 
-export const ALERTS: {
-  id: number;
-  type: AlertType;
-  zone: string;
-  message: string;
-  detail: string;
-  time: string;
-}[] = [
+export const ALERTS: Alert[] = [
   {
     id: 1,
     type: 'warning',
@@ -76,15 +61,7 @@ export const ALERTS: {
   },
 ];
 
-export const IRRIGATION: {
-  zone: string;
-  crop: string;
-  time: string;
-  duration: number;
-  volume: number;
-  done: boolean;
-  next?: boolean;
-}[] = [
+export const IRRIGATION: IrrigationSchedule[] = [
   { zone: 'A', crop: '방울토마토', time: '06:00', duration: 15, volume: 45, done: true },
   { zone: 'B', crop: '로메인 상추', time: '06:30', duration: 12, volume: 30, done: true },
   { zone: 'C', crop: '딸기', time: '12:00', duration: 18, volume: 52, done: false, next: true },
