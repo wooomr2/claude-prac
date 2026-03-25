@@ -5,13 +5,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev       # Start dev server (Vite HMR)
-npm run build     # Type-check + production bundle (tsc -b && vite build)
-npm run lint      # ESLint
-npm run preview   # Serve the dist/ build locally
+npm run dev           # Start dev server (Vite HMR)
+npm run build         # Type-check + production bundle (tsc -b && vite build)
+npm run lint          # ESLint
+npm run format        # Prettier write (all files)
+npm run format:check  # Prettier check without writing
+npm run preview       # Serve the dist/ build locally
 ```
 
 No test runner is configured yet.
+
+## After Every Code Change
+
+After completing any coding task, always run in order:
+
+```bash
+npm run format   # Prettier (tabWidth: 2, printWidth: 120)
+npm run lint     # ESLint
+```
+
+Fix any lint errors before finishing. Prettier is non-negotiable — all committed code must be formatted.
 
 ## Architecture
 
