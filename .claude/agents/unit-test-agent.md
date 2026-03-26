@@ -66,6 +66,17 @@ Each test must be fully independent: setup in `beforeEach`, teardown in `afterEa
 
 Run tests (`pnpm --filter <app> test`) and fix any failures. Report: test count, coverage areas, assumptions, and untestable areas with reasons.
 
+## What NOT to Test
+
+Skip files that have no meaningful logic to verify:
+
+- **Health check controllers** (e.g., `health.controller.ts`, `app.controller.ts` with a single `getHello()`) — they contain no business logic; testing them just asserts that NestJS wired up a route.
+- **Database/ORM module configuration files** (e.g., `database.module.ts`, `typeorm.config.ts`) — these are pure DI wiring; testing them only verifies framework behavior, not your code.
+- **Plain DTO/entity classes** with no methods — they are just type declarations.
+- **Barrel files** (`index.ts`) that only re-export.
+
+If you encounter one of these files, skip it and briefly note why in your Step 3 report. Do not pad test counts with tests that assert nothing meaningful.
+
 ## Quality Standards
 
 - No trivial tests — every test asserts meaningful behavior
