@@ -39,6 +39,25 @@ pnpm lint     # ESLint
 
 Fix any lint errors before finishing. Prettier is non-negotiable — all committed code must be formatted.
 
+## Coding Conventions
+
+### TypeScript Interfaces
+
+All `interface` declarations **must** be prefixed with `I`:
+
+```typescript
+// ✅ correct
+interface IUser { ... }
+interface ISensorCard { ... }
+interface IApiResponse<T> { ... }
+
+// ❌ wrong
+interface User { ... }
+interface SensorCard { ... }
+```
+
+This applies to all packages — `apps/frontend`, `apps/backend`, and `packages/shared`.
+
 ## Architecture
 
 **Smart Farm Automation Dashboard** — Korean-language SPA for greenhouse monitoring and control.

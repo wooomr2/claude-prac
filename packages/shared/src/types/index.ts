@@ -1,5 +1,5 @@
 /** 공통 API 응답 래퍼 */
-export interface ApiResponse<T> {
+export interface IApiResponse<T> {
   success: boolean;
   data: T;
   message?: string;
@@ -7,13 +7,13 @@ export interface ApiResponse<T> {
 }
 
 /** 페이지네이션 */
-export interface PaginationMeta {
+export interface IPaginationMeta {
   page: number;
   limit: number;
   total: number;
   totalPages: number;
 }
 
-export interface PaginatedResponse<T> extends ApiResponse<T[]> {
-  meta: PaginationMeta;
+export interface IPaginatedResponse<T> extends IApiResponse<T[]> {
+  meta: IPaginationMeta;
 }

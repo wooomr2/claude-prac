@@ -1,5 +1,5 @@
 import { areaPath, linePath } from '../../../utils/svg';
-import type { SensorCardProps, SensorStatus } from '../types';
+import type { ISensorCardProps, SensorStatus } from '../types';
 
 // ─── Status Style Maps ───────────────────────────────────────────────────────
 const BORDER_BY_STATUS: Record<SensorStatus, string> = {
@@ -21,14 +21,14 @@ const BADGE_BY_STATUS: Record<SensorStatus, { background: string; color: string;
 };
 
 // ─── Sparkline ────────────────────────────────────────────────────────────────
-interface SparklineProps {
+interface ISparklineProps {
   data: number[];
   color: string;
   w?: number;
   h?: number;
 }
 
-function Sparkline({ data, color, w = 80, h = 30 }: SparklineProps) {
+function Sparkline({ data, color, w = 80, h = 30 }: ISparklineProps) {
   const min = Math.min(...data);
   const max = Math.max(...data);
   const gid = `g${color.replace(/[^a-z0-9]/gi, '')}`;

@@ -8,7 +8,7 @@ import IrrigationPanel from './components/IrrigationPanel';
 import SensorCard from './components/SensorCard';
 import ZoneGrid from './components/ZoneGrid';
 import { CO2_HISTORY, HUMID_HISTORY, LIGHT_HISTORY, TEMP_HISTORY } from './data';
-import type { SensorCardProps, SensorStatus } from './types';
+import type { ISensorCardProps, SensorStatus } from './types';
 
 function getSensorStatus(
   value: number,
@@ -44,7 +44,7 @@ function DashboardPage() {
     return () => clearInterval(id);
   }, []);
 
-  const sensors: SensorCardProps[] = [
+  const sensors: ISensorCardProps[] = [
     {
       label: '온도',
       value: temp,

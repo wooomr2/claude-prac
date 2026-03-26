@@ -2,7 +2,7 @@ export type SensorStatus = 'normal' | 'warning' | 'danger';
 export type ZoneStatus = 'active' | 'warning' | 'inactive';
 export type AlertType = 'info' | 'warning' | 'success' | 'danger';
 
-export interface SensorCardProps {
+export interface ISensorCardProps {
   label: string;
   value: number;
   unit: string;
@@ -16,7 +16,7 @@ export interface SensorCardProps {
   icon: string;
 }
 
-export interface Zone {
+export interface IZone {
   id: string;
   name: string;
   crop: string;
@@ -26,7 +26,7 @@ export interface Zone {
   health: number;
 }
 
-export interface Alert {
+export interface IAlert {
   id: number;
   type: AlertType;
   zone: string;
@@ -35,7 +35,7 @@ export interface Alert {
   time: string;
 }
 
-export interface IrrigationSchedule {
+export interface IIrrigationSchedule {
   zone: string;
   crop: string;
   time: string;
