@@ -1,6 +1,27 @@
 version: '1.0'
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    hostname: postgres
+    environment:
+      POSTGRES_DB: farm_db
+      POSTGRES_USER: farm_user
+      POSTGRES_PASSWORD: farm_pass
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - farm-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U farm_user -d farm_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   frontend:
     build:
       context: .
@@ -27,6 +48,14 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=farm_db
+      - DB_USER=farm_user
+      - DB_PASS=farm_pass
+    depends_on:
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - farm-network
@@ -35,3 +64,6 @@ services:
 networks:
   farm-network:
     driver: bridge
+
+volumes:
+  postgres_data:

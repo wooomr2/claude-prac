@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import Footer from '../../components/layout/Footer';
-import Header from '../../components/layout/Header';
-import Sidebar from '../../components/layout/Sidebar';
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
+import Sidebar from '@/components/layout/Sidebar';
 import AlertFeed from './components/AlertFeed';
 import EnvironmentChart from './components/EnvironmentChart';
 import IrrigationPanel from './components/IrrigationPanel';
@@ -18,8 +18,7 @@ function getSensorStatus(
   dangerHigh: number
 ): SensorStatus {
   if (value < dangerLow || value > dangerHigh) return 'danger';
-  if (value < warnLow || value > warnHigh) return 'warning';
-  return 'normal';
+  else return 'normal';
 }
 
 function clampedRandom(value: number, min: number, max: number, delta: number, decimals?: number): number {

@@ -1,4 +1,4 @@
-import { areaPath, linePath } from '../../../utils/svg';
+import { areaPath, linePath } from '@/utils/svg';
 import type { ISensorCardProps, SensorStatus } from '../types';
 
 // ─── Status Style Maps ───────────────────────────────────────────────────────
@@ -76,7 +76,7 @@ function Ring({ pct, color, size = 56 }: RingProps) {
 }
 
 // ─── SensorCard ───────────────────────────────────────────────────────────────
-function SensorCard({ label, value, unit, min, max, target, color, status, trend, history, icon }: SensorCardProps) {
+function SensorCard({ label, value, unit, min, max, target, color, status, trend, history, icon }: ISensorCardProps) {
   const pct = (value - min) / (max - min);
   const isInteger = unit === 'lux' || unit === 'ppm';
   const displayVal = value > 999 ? value.toLocaleString() : value.toFixed(isInteger ? 0 : 1);

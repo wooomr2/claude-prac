@@ -15,6 +15,7 @@ pnpm preview       # Serve dist/ locally
 ### Entry & Providers
 
 `main.tsx` renders:
+
 ```
 <ThemeProvider>        ← dark/light, persisted to localStorage as 'sf-theme'
   <RouterProvider>     ← React Router v7
@@ -27,6 +28,7 @@ Single route in `src/router/index.tsx`: `/` → `DashboardPage`.
 ### Dashboard Layout (`src/pages/Dashboard/`)
 
 `index.tsx` composes the full page:
+
 - `Sidebar` (collapsible, 64 px collapsed / 200 px expanded) + `Header` (TopBar + StatsStrip with live clock)
 - Row 1: four `SensorCard` components — Temperature, Humidity, CO₂, Light
 - Row 2: `EnvironmentChart` (dual-line SVG time-series) + `ZoneGrid` (6 crop zones)
