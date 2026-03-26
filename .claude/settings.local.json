@@ -1,6 +1,20 @@
 {
   "permissions": {
-    "allow": ["Bash(npm run:*)"]
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(npm --version)",
+      "Bash(pnpm --version)",
+      "Bash(npm install:*)",
+      "Bash(cp -r src apps/frontend/src)",
+      "Bash(cp -r public apps/frontend/public)",
+      "Bash(cp -r /d/woo/ui-test/src/. /d/woo/ui-test/apps/frontend/src/)",
+      "Bash(cp -r /d/woo/ui-test/public/. /d/woo/ui-test/apps/frontend/public/)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm approve-builds:*)",
+      "Bash(pnpm:*)"
+    ]
   },
-  "enabledMcpjsonServers": ["playwright"]
+  "enabledMcpjsonServers": [
+    "playwright"
+  ]
 }
