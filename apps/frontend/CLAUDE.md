@@ -5,24 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-pnpm dev           # Vite dev server with HMR
-pnpm build         # Type-check + production bundle (tsc -b && vite build)
-pnpm lint          # ESLint
-pnpm format        # Prettier write
-pnpm format:check  # Prettier check without writing
 pnpm preview       # Serve dist/ locally
 ```
-
-## After Every Code Change
-
-Always run in order without asking:
-
-```bash
-pnpm format   # Prettier (tabWidth: 2, printWidth: 120)
-pnpm lint     # ESLint
-```
-
-Fix any lint errors before finishing. Prettier is non-negotiable.
 
 ## Architecture
 
