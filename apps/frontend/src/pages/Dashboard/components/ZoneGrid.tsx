@@ -1,23 +1,23 @@
-import { ZONES } from '../data';
-import type { ZoneStatus } from '../types';
+import { ZONES } from '../data'
+import type { ZoneStatus } from '../types'
 
 const STATUS_COLOR: Record<ZoneStatus, string> = {
   active: 'var(--sf-accent)',
   warning: '#f59e0b',
   inactive: 'var(--sf-text-4)',
-};
+}
 
 const STATUS_BG: Record<ZoneStatus, string> = {
   active: 'var(--sf-zone-active-bg)',
   warning: 'var(--sf-zone-warn-bg)',
   inactive: 'var(--sf-zone-inactive-bg)',
-};
+}
 
 const STATUS_BORDER: Record<ZoneStatus, string> = {
   active: 'var(--sf-border)',
   warning: 'var(--sf-warn-border)',
   inactive: 'var(--sf-border-dim)',
-};
+}
 
 function ZoneGrid() {
   return (
@@ -81,7 +81,7 @@ function ZoneGrid() {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default ZoneGrid;
+export default ZoneGrid

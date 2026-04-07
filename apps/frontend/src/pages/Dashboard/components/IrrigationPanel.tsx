@@ -1,25 +1,25 @@
-import { IRRIGATION } from '../data';
-import type { IrrigationSchedule } from '../types';
+import { IRRIGATION } from '../data'
+import type { IrrigationSchedule } from '../types'
 
 function getItemBackground(item: IrrigationSchedule): string {
-  if (item.next) return 'var(--sf-accent-next-bg)';
-  if (item.done) return 'var(--sf-zone-inactive-bg)';
-  return 'var(--sf-bg-item)';
+  if (item.next) return 'var(--sf-accent-next-bg)'
+  if (item.done) return 'var(--sf-zone-inactive-bg)'
+  return 'var(--sf-bg-item)'
 }
 
 function getItemBorder(item: IrrigationSchedule): string {
-  if (item.next) return '1px solid var(--sf-accent-next-border)';
-  return '1px solid transparent';
+  if (item.next) return '1px solid var(--sf-accent-next-border)'
+  return '1px solid transparent'
 }
 
 function getBadgeStyle(item: IrrigationSchedule): { background: string; color: string; label: string } {
   if (item.done) {
-    return { background: 'var(--sf-accent-done-bg)', color: 'var(--sf-accent-done-text)', label: '완료' };
+    return { background: 'var(--sf-accent-done-bg)', color: 'var(--sf-accent-done-text)', label: '완료' }
   }
   if (item.next) {
-    return { background: 'var(--sf-accent-bg)', color: 'var(--sf-accent)', label: '다음' };
+    return { background: 'var(--sf-accent-bg)', color: 'var(--sf-accent)', label: '다음' }
   }
-  return { background: 'var(--sf-bg-item)', color: 'var(--sf-text-4)', label: '예정' };
+  return { background: 'var(--sf-bg-item)', color: 'var(--sf-text-4)', label: '예정' }
 }
 
 function IrrigationPanel() {
@@ -50,7 +50,7 @@ function IrrigationPanel() {
       </div>
       <div className="space-y-1.5">
         {IRRIGATION.map((item) => {
-          const badge = getBadgeStyle(item);
+          const badge = getBadgeStyle(item)
           return (
             <div
               key={`${item.zone}-${item.time}`}
@@ -90,11 +90,11 @@ function IrrigationPanel() {
                 {badge.label}
               </span>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }
 
-export default IrrigationPanel;
+export default IrrigationPanel

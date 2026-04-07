@@ -1,48 +1,48 @@
-import { HUMID_HISTORY, TEMP_HISTORY } from '../data';
+import { HUMID_HISTORY, TEMP_HISTORY } from '../data'
 
 // ─── Chart Constants ─────────────────────────────────────────────────────────
-const W = 500;
-const H = 190;
-const P = { t: 20, r: 16, b: 36, l: 48 };
-const IW = W - P.l - P.r;
-const IH = H - P.t - P.b;
+const W = 500
+const H = 190
+const P = { t: 20, r: 16, b: 36, l: 48 }
+const IW = W - P.l - P.r
+const IH = H - P.t - P.b
 
-const TEMP_RANGE = { min: 18, max: 28 };
-const HUMID_RANGE = { min: 55, max: 80 };
+const TEMP_RANGE = { min: 18, max: 28 }
+const HUMID_RANGE = { min: 55, max: 80 }
 
-const X_TICKS = [0, 4, 8, 12, 16, 20, 23];
-const Y_TICKS = [18, 20, 22, 24, 26, 28];
+const X_TICKS = [0, 4, 8, 12, 16, 20, 23]
+const Y_TICKS = [18, 20, 22, 24, 26, 28]
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function buildChartLine(data: number[], range: { min: number; max: number }): string {
-  const span = range.max - range.min;
+  const span = range.max - range.min
   return data
     .map((v, i) => {
-      const x = P.l + (i / 23) * IW;
-      const y = P.t + IH - ((v - range.min) / span) * IH;
-      return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
+      const x = P.l + (i / 23) * IW
+      const y = P.t + IH - ((v - range.min) / span) * IH
+      return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`
     })
-    .join(' ');
+    .join(' ')
 }
 
 function buildChartArea(linePath: string): string {
-  return `${linePath} L${(P.l + IW).toFixed(1)} ${P.t + IH} L${P.l} ${P.t + IH} Z`;
+  return `${linePath} L${(P.l + IW).toFixed(1)} ${P.t + IH} L${P.l} ${P.t + IH} Z`
 }
 
 function yForValue(value: number, range: { min: number; max: number }): number {
-  return P.t + IH - ((value - range.min) / (range.max - range.min)) * IH;
+  return P.t + IH - ((value - range.min) / (range.max - range.min)) * IH
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
 function EnvironmentChart() {
-  const tLine = buildChartLine(TEMP_HISTORY, TEMP_RANGE);
-  const hLine = buildChartLine(HUMID_HISTORY, HUMID_RANGE);
-  const tArea = buildChartArea(tLine);
-  const hArea = buildChartArea(hLine);
+  const tLine = buildChartLine(TEMP_HISTORY, TEMP_RANGE)
+  const hLine = buildChartLine(HUMID_HISTORY, HUMID_RANGE)
+  const tArea = buildChartArea(tLine)
+  const hArea = buildChartArea(hLine)
 
-  const lastX = P.l + IW;
-  const lastTy = yForValue(TEMP_HISTORY[23], TEMP_RANGE);
-  const lastHy = yForValue(HUMID_HISTORY[23], HUMID_RANGE);
+  const lastX = P.l + IW
+  const lastTy = yForValue(TEMP_HISTORY[23], TEMP_RANGE)
+  const lastHy = yForValue(HUMID_HISTORY[23], HUMID_RANGE)
 
   return (
     <div
@@ -84,12 +84,12 @@ function EnvironmentChart() {
           </defs>
 
           {Y_TICKS.map((v) => {
-            const y = yForValue(v, TEMP_RANGE);
-            return <line key={v} x1={P.l} y1={y} x2={P.l + IW} y2={y} stroke="var(--sf-chart-grid)" strokeWidth="1" />;
+            const y = yForValue(v, TEMP_RANGE)
+            return <line key={v} x1={P.l} y1={y} x2={P.l + IW} y2={y} stroke="var(--sf-chart-grid)" strokeWidth="1" />
           })}
 
           {Y_TICKS.map((v) => {
-            const y = yForValue(v, TEMP_RANGE);
+            const y = yForValue(v, TEMP_RANGE)
             return (
               <text
                 key={v}
@@ -102,11 +102,11 @@ function EnvironmentChart() {
               >
                 {v}°
               </text>
-            );
+            )
           })}
 
           {X_TICKS.map((h) => {
-            const x = P.l + (h / 23) * IW;
+            const x = P.l + (h / 23) * IW
             return (
               <text
                 key={h}
@@ -119,7 +119,7 @@ function EnvironmentChart() {
               >
                 {String(h).padStart(2, '0')}h
               </text>
-            );
+            )
           })}
 
           <path d={hArea} fill="url(#hGrad)" />
@@ -139,7 +139,7 @@ function EnvironmentChart() {
         </svg>
       </div>
     </div>
-  );
+  )
 }
 
-export default EnvironmentChart;
+export default EnvironmentChart

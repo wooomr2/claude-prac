@@ -2,7 +2,7 @@
 
 /** 헬스체크 응답 */
 export interface IHealthCheckDto {
-  status: 'ok' | 'error';
-  timestamp: string;
-  service: string;
+  status: 'ok' | 'error'
+  timestamp: string
+  service: string
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
 // ─── Icon Components ──────────────────────────────────────────────────────────
 function UserIcon() {
@@ -13,14 +13,14 @@ function UserIcon() {
         strokeLinecap="round"
       />
     </svg>
-  );
+  )
 }
 function CloudIcon() {
   return (
     <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 shrink-0">
       <path d="M15.5 9.5A4.5 4.5 0 0011 5a4.49 4.49 0 00-4.22 2.95A3.5 3.5 0 104.5 15H15a3 3 0 00.5-5.5z" />
     </svg>
-  );
+  )
 }
 function DeviceIcon() {
   return (
@@ -29,7 +29,7 @@ function DeviceIcon() {
       <path d="M12 9h3l2 2-2 2h-3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
       <circle cx="7" cy="9" r="1.5" />
     </svg>
-  );
+  )
 }
 function AppIcon() {
   return (
@@ -39,7 +39,7 @@ function AppIcon() {
       <rect x="2" y="11" width="7" height="7" rx="1.5" />
       <rect x="11" y="11" width="7" height="7" rx="1.5" />
     </svg>
-  );
+  )
 }
 function ServiceIcon() {
   return (
@@ -53,7 +53,7 @@ function ServiceIcon() {
         strokeLinecap="round"
       />
     </svg>
-  );
+  )
 }
 function CodeIcon() {
   return (
@@ -67,7 +67,7 @@ function CodeIcon() {
         strokeLinejoin="round"
       />
     </svg>
-  );
+  )
 }
 function TreeIcon() {
   return (
@@ -84,7 +84,7 @@ function TreeIcon() {
         strokeLinecap="round"
       />
     </svg>
-  );
+  )
 }
 function RecordIcon() {
   return (
@@ -92,7 +92,7 @@ function RecordIcon() {
       <rect x="3" y="2" width="14" height="16" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
       <path d="M6 7h8M6 10h8M6 13h5" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
     </svg>
-  );
+  )
 }
 function ChevronIcon({ collapsed }: { collapsed: boolean }) {
   return (
@@ -104,7 +104,7 @@ function ChevronIcon({ collapsed }: { collapsed: boolean }) {
     >
       <path d="M7 5l6 5-6 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
-  );
+  )
 }
 
 // ─── Navigation Items ─────────────────────────────────────────────────────────
@@ -117,20 +117,20 @@ const NAV = [
   { icon: <CodeIcon />, label: '시설코드' },
   { icon: <TreeIcon />, label: '시설트리' },
   { icon: <RecordIcon />, label: '시설레코드' },
-];
+]
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 interface SidebarProps {
-  mobileOpen: boolean;
-  onClose: () => void;
+  mobileOpen: boolean
+  onClose: () => void
 }
 
 function Sidebar({ mobileOpen, onClose }: SidebarProps) {
-  const [collapsed, setCollapsed] = useState(true);
-  const [active, setActive] = useState(0);
+  const [collapsed, setCollapsed] = useState(true)
+  const [active, setActive] = useState(0)
 
-  const expanded = !collapsed || mobileOpen;
-  const sidebarWidth = expanded ? 200 : 64;
+  const expanded = !collapsed || mobileOpen
+  const sidebarWidth = expanded ? 200 : 64
 
   return (
     <>
@@ -175,8 +175,8 @@ function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           )}
           <button
             onClick={() => {
-              setCollapsed((v) => !v);
-              if (mobileOpen) onClose();
+              setCollapsed((v) => !v)
+              if (mobileOpen) onClose()
             }}
             className={`flex items-center justify-center w-6 h-6 rounded transition-colors duration-150 ${expanded ? 'ml-auto' : ''}`}
             style={{ color: 'var(--sf-text-6)' }}
@@ -193,8 +193,8 @@ function Sidebar({ mobileOpen, onClose }: SidebarProps) {
               key={item.label}
               title={!expanded ? item.label : undefined}
               onClick={() => {
-                setActive(i);
-                if (mobileOpen) onClose();
+                setActive(i)
+                if (mobileOpen) onClose()
               }}
               className="relative w-full h-10 rounded-lg flex items-center gap-2.5 px-2.5 transition-all duration-150"
               style={
@@ -234,7 +234,7 @@ function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         </div>
       </aside>
     </>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar

@@ -1,12 +1,12 @@
-import { ALERTS } from '../data';
-import type { AlertType } from '../types';
+import { ALERTS } from '../data'
+import type { AlertType } from '../types'
 
 const ALERT_STYLE: Record<AlertType, { color: string; bg: string }> = {
   info: { color: 'var(--sf-alert-info)', bg: 'var(--sf-alert-info-bg)' },
   warning: { color: 'var(--sf-alert-warn)', bg: 'var(--sf-alert-warn-bg)' },
   success: { color: 'var(--sf-alert-ok)', bg: 'var(--sf-alert-ok-bg)' },
   danger: { color: 'var(--sf-alert-danger)', bg: 'var(--sf-alert-danger-bg)' },
-};
+}
 
 function AlertFeed() {
   return (
@@ -32,7 +32,7 @@ function AlertFeed() {
       </div>
       <div className="space-y-1.5 overflow-auto">
         {ALERTS.map((a) => {
-          const s = ALERT_STYLE[a.type];
+          const s = ALERT_STYLE[a.type]
           return (
             <div key={a.id} className="flex items-start gap-2.5 p-2.5 rounded-lg" style={{ background: s.bg }}>
               <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: s.color }} />
@@ -56,11 +56,11 @@ function AlertFeed() {
                 </div>
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }
 
-export default AlertFeed;
+export default AlertFeed

@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import Footer from '@/components/layout/Footer';
-import Header from '@/components/layout/Header';
-import Sidebar from '@/components/layout/Sidebar';
-import AlertFeed from './components/AlertFeed';
-import EnvironmentChart from './components/EnvironmentChart';
-import IrrigationPanel from './components/IrrigationPanel';
-import SensorCard from './components/SensorCard';
-import ZoneGrid from './components/ZoneGrid';
-import { CO2_HISTORY, HUMID_HISTORY, LIGHT_HISTORY, TEMP_HISTORY } from './data';
-import type { ISensorCardProps, SensorStatus } from './types';
+import { useEffect, useState } from 'react'
+import Footer from '@/components/layout/Footer'
+import Header from '@/components/layout/Header'
+import Sidebar from '@/components/layout/Sidebar'
+import AlertFeed from './components/AlertFeed'
+import EnvironmentChart from './components/EnvironmentChart'
+import IrrigationPanel from './components/IrrigationPanel'
+import SensorCard from './components/SensorCard'
+import ZoneGrid from './components/ZoneGrid'
+import { CO2_HISTORY, HUMID_HISTORY, LIGHT_HISTORY, TEMP_HISTORY } from './data'
+import type { ISensorCardProps, SensorStatus } from './types'
 
 function getSensorStatus(
   value: number,
@@ -17,31 +17,31 @@ function getSensorStatus(
   dangerLow: number,
   dangerHigh: number
 ): SensorStatus {
-  if (value < dangerLow || value > dangerHigh) return 'danger';
-  else return 'normal';
+  if (value < dangerLow || value > dangerHigh) return 'danger'
+  else return 'normal'
 }
 
 function clampedRandom(value: number, min: number, max: number, delta: number, decimals?: number): number {
-  const raw = Math.max(min, Math.min(max, value + (Math.random() - 0.5) * delta));
-  return decimals !== undefined ? parseFloat(raw.toFixed(decimals)) : Math.round(raw);
+  const raw = Math.max(min, Math.min(max, value + (Math.random() - 0.5) * delta))
+  return decimals !== undefined ? parseFloat(raw.toFixed(decimals)) : Math.round(raw)
 }
 
 function DashboardPage() {
-  const [temp, setTemp] = useState(24.3);
-  const [humid, setHumid] = useState(67.5);
-  const [co2, setCo2] = useState(842);
-  const [light, setLight] = useState(35400);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [temp, setTemp] = useState(24.3)
+  const [humid, setHumid] = useState(67.5)
+  const [co2, setCo2] = useState(842)
+  const [light, setLight] = useState(35400)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     const id = setInterval(() => {
-      setTemp((v) => clampedRandom(v, 20, 29, 0.2, 1));
-      setHumid((v) => clampedRandom(v, 58, 78, 0.4, 1));
-      setCo2((v) => clampedRandom(v, 750, 960, 8));
-      setLight((v) => clampedRandom(v, 31000, 43000, 200));
-    }, 2000);
-    return () => clearInterval(id);
-  }, []);
+      setTemp((v) => clampedRandom(v, 20, 29, 0.2, 1))
+      setHumid((v) => clampedRandom(v, 58, 78, 0.4, 1))
+      setCo2((v) => clampedRandom(v, 750, 960, 8))
+      setLight((v) => clampedRandom(v, 31000, 43000, 200))
+    }, 2000)
+    return () => clearInterval(id)
+  }, [])
 
   const sensors: ISensorCardProps[] = [
     {
@@ -96,7 +96,7 @@ function DashboardPage() {
       history: LIGHT_HISTORY,
       icon: '☀',
     },
-  ];
+  ]
 
   return (
     <div
@@ -136,7 +136,7 @@ function DashboardPage() {
 
       <Footer />
     </div>
-  );
+  )
 }
 
-export default DashboardPage;
+export default DashboardPage

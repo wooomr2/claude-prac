@@ -1,37 +1,37 @@
-import { areaPath, linePath } from '@/utils/svg';
-import type { ISensorCardProps, SensorStatus } from '../types';
+import { areaPath, linePath } from '@/utils/svg'
+import type { ISensorCardProps, SensorStatus } from '../types'
 
 // ─── Status Style Maps ───────────────────────────────────────────────────────
 const BORDER_BY_STATUS: Record<SensorStatus, string> = {
   normal: 'var(--sf-ok-border)',
   warning: 'var(--sf-warn-border)',
   danger: 'var(--sf-danger-border)',
-};
+}
 
 const BG_BY_STATUS: Record<SensorStatus, string> = {
   normal: 'var(--sf-ok-bg)',
   warning: 'var(--sf-warn-bg)',
   danger: 'var(--sf-danger-bg)',
-};
+}
 
 const BADGE_BY_STATUS: Record<SensorStatus, { background: string; color: string; label: string }> = {
   normal: { background: 'var(--sf-accent-bg)', color: 'var(--sf-accent)', label: '정상' },
   warning: { background: 'rgba(245,158,11,0.1)', color: '#f59e0b', label: '주의' },
   danger: { background: 'rgba(239,68,68,0.1)', color: '#f87171', label: '위험' },
-};
+}
 
 // ─── Sparkline ────────────────────────────────────────────────────────────────
 interface ISparklineProps {
-  data: number[];
-  color: string;
-  w?: number;
-  h?: number;
+  data: number[]
+  color: string
+  w?: number
+  h?: number
 }
 
 function Sparkline({ data, color, w = 80, h = 30 }: ISparklineProps) {
-  const min = Math.min(...data);
-  const max = Math.max(...data);
-  const gid = `g${color.replace(/[^a-z0-9]/gi, '')}`;
+  const min = Math.min(...data)
+  const max = Math.max(...data)
+  const gid = `g${color.replace(/[^a-z0-9]/gi, '')}`
   return (
     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none">
       <defs>
@@ -43,20 +43,20 @@ function Sparkline({ data, color, w = 80, h = 30 }: ISparklineProps) {
       <path d={areaPath(data, min, max, w, h)} fill={`url(#${gid})`} />
       <path d={linePath(data, min, max, w, h)} stroke={color} strokeWidth="1.5" fill="none" strokeLinejoin="round" />
     </svg>
-  );
+  )
 }
 
 // ─── Ring Gauge ───────────────────────────────────────────────────────────────
 interface RingProps {
-  pct: number;
-  color: string;
-  size?: number;
+  pct: number
+  color: string
+  size?: number
 }
 
 function Ring({ pct, color, size = 56 }: RingProps) {
-  const r = (size - 8) / 2;
-  const circ = 2 * Math.PI * r;
-  const fill = Math.min(Math.max(pct, 0), 1) * circ;
+  const r = (size - 8) / 2
+  const circ = 2 * Math.PI * r
+  const fill = Math.min(Math.max(pct, 0), 1) * circ
   return (
     <svg width={size} height={size} style={{ transform: 'rotate(-90deg)', flexShrink: 0 }}>
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--sf-border)" strokeWidth="5" />
@@ -72,15 +72,15 @@ function Ring({ pct, color, size = 56 }: RingProps) {
         style={{ transition: 'stroke-dasharray 1.2s ease-in-out' }}
       />
     </svg>
-  );
+  )
 }
 
 // ─── SensorCard ───────────────────────────────────────────────────────────────
 function SensorCard({ label, value, unit, min, max, target, color, status, trend, history, icon }: ISensorCardProps) {
-  const pct = (value - min) / (max - min);
-  const isInteger = unit === 'lux' || unit === 'ppm';
-  const displayVal = value > 999 ? value.toLocaleString() : value.toFixed(isInteger ? 0 : 1);
-  const badge = BADGE_BY_STATUS[status];
+  const pct = (value - min) / (max - min)
+  const isInteger = unit === 'lux' || unit === 'ppm'
+  const displayVal = value > 999 ? value.toLocaleString() : value.toFixed(isInteger ? 0 : 1)
+  const badge = BADGE_BY_STATUS[status]
 
   return (
     <div
@@ -143,7 +143,7 @@ function SensorCard({ label, value, unit, min, max, target, color, status, trend
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default SensorCard;
+export default SensorCard

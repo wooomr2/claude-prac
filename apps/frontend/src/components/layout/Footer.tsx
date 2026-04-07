@@ -16,7 +16,7 @@ function Footer() {
       </span>
       <span style={{ color: 'var(--sf-border)' }}>© 2025 SmartFarm Systems</span>
     </footer>
-  );
+  )
 }
 
-export default Footer;
+export default Footer

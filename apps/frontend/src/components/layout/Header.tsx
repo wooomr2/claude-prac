@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useTheme } from '@/context/ThemeContext';
+import { useEffect, useState } from 'react'
+import { useTheme } from '@/context/ThemeContext'
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 function SunIcon() {
@@ -15,7 +15,7 @@ function SunIcon() {
       <circle cx="10" cy="10" r="3.5" />
       <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" />
     </svg>
-  );
+  )
 }
 
 function MoonIcon() {
@@ -23,13 +23,13 @@ function MoonIcon() {
     <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
       <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
     </svg>
-  );
+  )
 }
 
 // ─── Theme Toggle ─────────────────────────────────────────────────────────────
 function ThemeToggle() {
-  const { theme, toggle } = useTheme();
-  const isDark = theme === 'dark';
+  const { theme, toggle } = useTheme()
+  const isDark = theme === 'dark'
   return (
     <button
       onClick={toggle}
@@ -62,18 +62,18 @@ function ThemeToggle() {
         }}
       />
     </button>
-  );
+  )
 }
 
 // ─── TopBar ───────────────────────────────────────────────────────────────────
 interface TopBarProps {
-  time: Date;
-  onMenuClick: () => void;
+  time: Date
+  onMenuClick: () => void
 }
 
 function TopBar({ time, onMenuClick }: TopBarProps) {
-  const t = time.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-  const d = time.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+  const t = time.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })
+  const d = time.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' })
   return (
     <header
       className="flex items-center px-3 md:px-5 shrink-0 gap-2 md:gap-4"
@@ -154,7 +154,7 @@ function TopBar({ time, onMenuClick }: TopBarProps) {
         </button>
       </div>
     </header>
-  );
+  )
 }
 
 // ─── StatsStrip ───────────────────────────────────────────────────────────────
@@ -183,28 +183,28 @@ function StatsStrip() {
         온실 1동 · 재배 면적 <span style={{ color: 'var(--sf-text-3)' }}>565 m²</span>
       </span>
     </div>
-  );
+  )
 }
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 interface HeaderProps {
-  onMenuClick: () => void;
+  onMenuClick: () => void
 }
 
 function Header({ onMenuClick }: HeaderProps) {
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState(new Date())
 
   useEffect(() => {
-    const id = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
+    const id = setInterval(() => setTime(new Date()), 1000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <>
       <TopBar time={time} onMenuClick={onMenuClick} />
       <StatsStrip />
     </>
-  );
+  )
 }
 
-export default Header;
+export default Header

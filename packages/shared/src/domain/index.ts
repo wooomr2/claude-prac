@@ -1,32 +1,32 @@
 /** 센서 타입 */
-export type SensorType = 'temperature' | 'humidity' | 'co2' | 'light';
+export type SensorType = 'temperature' | 'humidity' | 'co2' | 'light'
 
 /** 센서 읽기값 */
 export interface ISensorReading {
-  sensorId: string;
-  type: SensorType;
-  value: number;
-  unit: string;
-  recordedAt: string;
+  sensorId: string
+  type: SensorType
+  value: number
+  unit: string
+  recordedAt: string
 }
 
 /** 재배 구역 */
 export interface IZone {
-  id: string;
-  name: string;
-  cropType: string;
-  status: 'active' | 'idle' | 'maintenance';
+  id: string
+  name: string
+  cropType: string
+  status: 'active' | 'idle' | 'maintenance'
 }
 
 /** 알림 심각도 */
-export type AlertSeverity = 'info' | 'warning' | 'critical';
+export type AlertSeverity = 'info' | 'warning' | 'critical'
 
 /** 알림 */
 export interface IAlert {
-  id: string;
-  severity: AlertSeverity;
-  message: string;
-  zoneId?: string;
-  createdAt: string;
-  resolvedAt?: string;
+  id: string
+  severity: AlertSeverity
+  message: string
+  zoneId?: string
+  createdAt: string
+  resolvedAt?: string
 }
