@@ -1,18 +1,18 @@
 import { IRRIGATION } from '../data'
-import type { IrrigationSchedule } from '../types'
+import type { IIrrigationSchedule } from '../types'
 
-function getItemBackground(item: IrrigationSchedule): string {
+function getItemBackground(item: IIrrigationSchedule): string {
   if (item.next) return 'var(--sf-accent-next-bg)'
   if (item.done) return 'var(--sf-zone-inactive-bg)'
   return 'var(--sf-bg-item)'
 }
 
-function getItemBorder(item: IrrigationSchedule): string {
+function getItemBorder(item: IIrrigationSchedule): string {
   if (item.next) return '1px solid var(--sf-accent-next-border)'
   return '1px solid transparent'
 }
 
-function getBadgeStyle(item: IrrigationSchedule): { background: string; color: string; label: string } {
+function getBadgeStyle(item: IIrrigationSchedule): { background: string; color: string; label: string } {
   if (item.done) {
     return { background: 'var(--sf-accent-done-bg)', color: 'var(--sf-accent-done-text)', label: '완료' }
   }
